@@ -11,7 +11,6 @@
     "@tonaljs/tonal": "^4.0.1",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
-    "vue-music-notation": "^0.1.1",
     "vue-select": "^3.10.3"
   },
   "devDependencies": {

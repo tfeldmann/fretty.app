@@ -38,9 +38,9 @@
 
       <!-- notes -->
       <g v-for="string in strings" :key="'ng_' + string.nr">
-        <g v-for="note in string.notes" :key="note.key">
-          <!-- circle -->
-          <transition name="fade">
+        <transition-group name="list" tag="g">
+          <g v-for="note in string.notes" :key="note.key">
+            <!-- circle -->
             <circle
               :cx="note.x"
               :cy="string.y"
@@ -49,20 +49,20 @@
               fill="white"
               stroke="black"
             />
-          </transition>
 
-          <!-- name -->
-          <text
-            font-size="11"
-            :x="note.x"
-            :y="string.y"
-            alignment-baseline="middle"
-            fill="black"
-            text-anchor="middle"
-          >
-            {{ note.name }}
-          </text>
-        </g>
+            <!-- name -->
+            <text
+              font-size="11"
+              :x="note.x"
+              :y="string.y"
+              alignment-baseline="middle"
+              fill="black"
+              text-anchor="middle"
+            >
+              {{ note.name }}
+            </text>
+          </g>
+        </transition-group>
       </g>
     </g>
   </svg>
@@ -96,6 +96,7 @@ export default {
   data: function() {
     return {
       string_spacing: 30,
+      tuning_: this.tuning,
       notes_: this.notes,
       frets_: this.frets,
       sharps_: this.sharps,
@@ -103,9 +104,6 @@ export default {
   },
 
   computed: {
-    tuning_: function() {
-      return this.tuning;
-    },
     width: function() {
       return this.fretpos(this.frets - 1);
     },
@@ -183,11 +181,12 @@ export default {
 .fretboard {
   border: 1px solid red;
 }
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s;
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
   opacity: 0;
+  transform: translateX(30px);
 }
 </style>

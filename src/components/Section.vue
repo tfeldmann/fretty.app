@@ -13,19 +13,22 @@
       <label for="sharps">#</label>
     </div>
 
-    <label for="scale">Scale:</label>
-    <input type="text" v-model="scale.tonic" list="tonics" />
-    <datalist id="tonics">
-      <option v-for="name in chromatic" :value="name" :key="name.id"> </option>
-    </datalist>
-    <v-select :options="all_scales" v-model="scale.type"></v-select>
-
     <Fretboard
       :tuning="tuning"
       :notes="notes"
       :sharps="sharps"
       :frets="frets"
     />
+
+    <div>
+      <label for="scale">Scale:</label>
+      <input type="text" v-model="scale.tonic" list="tonics" />
+      <datalist id="tonics">
+        <option v-for="name in chromatic" :value="name" :key="name.id">
+        </option>
+      </datalist>
+      <v-select :options="all_scales" v-model="scale.type"></v-select>
+    </div>
   </div>
 </template>
 

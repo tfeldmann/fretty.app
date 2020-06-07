@@ -1,0 +1,123 @@
+<html>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js"></script>
+    <script src="https://unpkg.com/vue-select@latest"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vue-select@latest/dist/vue-select.css">
+
+    <style>
+        .settings {
+            margin-bottom: 20px;
+            background-color: silver;
+        }
+
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity .2s;
+        }
+        .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+            opacity: 0;
+        }
+    </style>
+<body>
+
+<h1>Fretboard Tool</h1>
+
+<div id="app">
+
+    <div class="settings">
+        Tuning:
+        <input type="text" v-model:value="tuning">
+
+        Frets:
+        <input v-model.number="frets" type="number" size=4 min="1" max="200">
+
+        Notation:
+        <input type="radio" id="sharps" value="#" v-model="sharps" v-bind:value="true">
+        <label for="sharps">#</label>
+        <input type="radio" id="flats" value="b" v-model="sharps" v-bind:value="false">
+        <label for="flats">b</label>
+    </div>
+    <br>
+    <svg width="800" height="300">
+        <template v-for="(notes, i_str) in display">
+            <svg class="string" x="50" :y="50 + i_str * string_spacing" overflow="auto">
+                <line x1="0" y1="0" :x2="fretpos(notes.length - 1)" y2="0" stroke="#000" stroke-width="1" />
+                <template v-for="(note, i_frt) in notes">
+                    <line v-if="i_str == 0" :x1="fretpos(i_frt)" y1=0 :x2="fretpos(i_frt)" :y2="(display.length - 1) * string_spacing" stroke-width=1 stroke="#000" />
+                    <transition name="fade">
+                    <svg v-if="note" :x="(fretpos(i_frt - 1) + fretpos(i_frt)) / 2" y=0 overflow=auto>
+                        <circle  cx="0" cy="0" r="10" stroke-width="1" fill="white" stroke="black" />
+                        <text font-size="11" x="0" y="0" alignment-baseline="middle" fill="black" text-anchor="middle">{{ note }}</text>
+                    </svg>
+                    </transition>
+                </template>
+            </svg>
+        </template>
+    </svg>
+    <br>
+    Scale: <input type="text" v-model="scale.tonic" size=5><v-select :options="all_scales" v-model="scale.type"></v-select>
+    <br>
+    <input type="button" value="add">
+
+    <pre>
+        {{ scale_info }}
+    </pre>
+</div>
+
+<script>
+    // https://github.com/tonaljs/tonal
+    Vue.component('v-select', VueSelect.VueSelect);
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+          tuning: "E A D G B E",
+          scale: { tonic: "A", type: "minor pentatonic" },
+          markers: [0, 3, 5, 7, 9, 12, 15, 17, 19, 21, 24],
+          frets: 20,
+          string_spacing: 30,
+          fret_spacing: 40,
+          sharps: true,
+          all_scales: Tonal.Scale.names(),
+        },
+        computed: {
+            scale_info() {
+                let name = this.scale.tonic + " " + this.scale.type;
+                return Tonal.Scale.get(name);
+            },
+            strings() {
+                return this.tuning.trim().split(" ").reverse().map(Tonal.Note.chroma);
+            },
+            display() {
+                let result = [];
+                var scale_notes = this.scale_info.notes.map(Tonal.Note.chroma);
+                for (var base of this.strings)
+                {
+                    var chromatic = Tonal.Range.numeric([base, base + this.frets]);
+                    var tmp = [];
+                    for(var c of chromatic) {
+                        if (scale_notes.includes(c % 12)) {
+                            tmp.push(this.toname(c));
+                        }
+                        else {
+                            tmp.push(null);
+                        }
+                    }
+                    result.push(tmp);
+                }
+                return result;
+            },
+        },
+        methods: {
+            fretpos(n) {
+                // https://www.liutaiomottola.com/formulae/fret.htm
+                const s = 1000;
+                var d = s - (s / Math.pow(2, (n / 12)));
+                return Math.round(d * 1000) / 1000;
+            },
+            toname(x) { return Tonal.Midi.midiToNoteName(x, { sharps: this.sharps, pitchClass: true }); },
+        },
+      })
+</script>
+
+</body>
+</html>

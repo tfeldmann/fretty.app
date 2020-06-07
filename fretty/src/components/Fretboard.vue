@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { Scale, Note, Range, Midi } from "@tonaljs/tonal";
+import { Midi } from "@tonaljs/tonal";
 
 const string_spacing = 30;
 
@@ -70,7 +70,8 @@ export default {
     frets: {
       default: 18,
     },
-    prefer_sharps: {
+    sharps: {
+      type: Boolean,
       default: true, // TODO: "sharps", "flats" or "interval"
     },
   },
@@ -94,16 +95,15 @@ export default {
   //   },
   // },
   methods: {
-
     fretpos(n) {
       // https://www.liutaiomottola.com/formulae/fret.htm
       const s = 1000;
-      var d = s - s / Math.pow(2, n / 12);
+      let d = s - s / Math.pow(2, n / 12);
       return Math.round(d * 1000) / 1000;
     },
     toname(x) {
       return Midi.midiToNoteName(x, {
-        sharps: this.sharps,
+        sharps: this.prefer_sharps,
         pitchClass: true,
       });
     },

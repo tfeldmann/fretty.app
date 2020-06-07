@@ -1,21 +1,17 @@
 <template>
   <div id="app">
-    <Fretboard tuning="[60,64,67]" notes="[60,64,67]" frets="15" />
-    <br>
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <p>Test</p>
+    <SimpleFretboard v-bind:tuning="[60, 61, 62, 63, 64, 65]" v-bind:notes="[1]" />
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
-import Fretboard from "./components/Fretboard.vue";
+import SimpleFretboard from "./components/SimpleFretboard.vue";
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
-    Fretboard,
+    SimpleFretboard,
   },
 };
 </script>

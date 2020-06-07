@@ -1,6 +1,22 @@
 <template>
   <svg class="fretboard" width="800" height="300">
+    <text font-size="11" x="10" y="20" fill="black">
+      TODO: Tuning: E A D G
+    </text>
+
     <g transform="translate(50, 50)">
+      <!--
+      <text
+        font-size="11"
+        :x="width"
+        :y="height + 20"
+        fill="gray"
+        alignment-baseline="hanging"
+        text-anchor="end"
+      >
+        created with fretty.app
+      </text>-->
+
       <!-- string lines -->
       <line
         v-for="string in strings"
@@ -178,7 +194,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .fretboard {
-  border: 1px solid red;
+  border: 1px solid silver;
 }
 .list-enter-active,
 .list-leave-active {

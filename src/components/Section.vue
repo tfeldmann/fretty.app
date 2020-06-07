@@ -13,12 +13,13 @@
       <label for="sharps">#</label>
     </div>
 
-    Scale: <input type="text" v-model="scale.tonic" size="5" /><v-select
-      :options="all_scales"
-      v-model="scale.type"
-    ></v-select>
+    <label for="scale">Scale:</label>
+    <input type="text" v-model="scale.tonic" list="tonics" />
+    <datalist id="tonics">
+      <option v-for="name in chromatic" :value="name" :key="name.id"> </option>
+    </datalist>
+    <v-select :options="all_scales" v-model="scale.type"></v-select>
 
-    <input type="text" v-model="usr_tuning" />
     <Fretboard
       :tuning="tuning"
       :notes="notes"
@@ -32,6 +33,7 @@
 import Fretboard from "./Fretboard.vue";
 import { Note, Scale } from "@tonaljs/tonal";
 import vSelect from "vue-select";
+import { Midi } from "@tonaljs/tonal";
 
 import "vue-select/dist/vue-select.css";
 
@@ -62,13 +64,26 @@ export default {
         .reverse();
     },
     notes: function() {
-      return [60, 61, 62, 63, 65, 30];
+      return this.scale_info.notes.map(Note.chroma);
+    },
+    scale_info: function() {
+      let name = this.scale.tonic + " " + this.scale.type;
+      return Scale.get(name);
+    },
+    chromatic: function() {
+      return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(this.toname);
     },
   },
 
   methods: {
     normalize(notes) {
       return notes.map((x) => x % 12);
+    },
+    toname(x) {
+      return Midi.midiToNoteName(x, {
+        sharps: this.sharps,
+        pitchClass: true,
+      });
     },
   },
 };

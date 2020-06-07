@@ -2,22 +2,21 @@
   <div>
     <pre style="text-align: left">
 strings: {{ strings }}
-fret_lines: {{ fret_lines }}
 </pre
     >
     <svg class="fretboard" width="800" height="300">
       <g transform="translate(50, 50)">
-        <g v-for="string in strings" :key="string.nr">
-          <!-- string lines -->
-          <line
-            x1="0"
-            :y1="string.y"
-            :x2="width"
-            :y2="string.y"
-            stroke="#000"
-            stroke-width="1"
-          />
-        </g>
+        <!-- string lines -->
+        <line
+          v-for="string in strings"
+          :key="'string_' + string.nr"
+          x1="0"
+          :y1="string.y"
+          :x2="width"
+          :y2="string.y"
+          stroke="#000"
+          stroke-width="1"
+        />
 
         <!-- nut -->
         <line
@@ -33,7 +32,7 @@ fret_lines: {{ fret_lines }}
         <!-- frets -->
         <line
           v-for="fret in fret_lines.lines"
-          :key="fret.nr"
+          :key="'fret_' + fret.nr"
           :x1="fret.x"
           :y1="fret_lines.y1"
           :x2="fret.x"
@@ -41,6 +40,33 @@ fret_lines: {{ fret_lines }}
           stroke="#000"
           :stroke-width="fret.width"
         />
+
+        <!-- notes -->
+        <g v-for="string in strings" :key="'notes_' + string.nr">
+          <g v-for="note in string.notes" :key="note.key">
+            <!-- circle -->
+            <circle
+              :cx="note.x"
+              :cy="string.y"
+              r="10"
+              stroke-width="1"
+              fill="white"
+              stroke="black"
+            />
+
+            <!-- name -->
+            <text
+              font-size="11"
+              :x="note.x"
+              :y="string.y"
+              alignment-baseline="middle"
+              fill="black"
+              text-anchor="middle"
+            >
+              {{ note.name }}
+            </text>
+          </g>
+        </g>
       </g>
     </svg>
   </div>
@@ -51,6 +77,7 @@ import { Midi } from "@tonaljs/tonal";
 
 export default {
   name: "SimpleFretboard",
+
   props: {
     tuning: {
       type: Array,
@@ -69,11 +96,13 @@ export default {
       default: true, // TODO: "sharps", "flats" or "interval"
     },
   },
+
   data: function() {
     return {
       string_spacing: 30,
     };
   },
+
   computed: {
     width: function() {
       return this.fretpos(this.frets - 1);
@@ -86,11 +115,27 @@ export default {
       this.tuning
         .slice()
         .reverse()
-        .forEach((tuning, i) => {
+        .forEach((tuning, string) => {
+          // find notes
+          let normalized_notes = this.normalize(this.notes);
+          let notes = [];
+          for (let fret = 0; fret < this.frets; fret++) {
+            let note = (tuning + fret) % 12;
+            if (normalized_notes.includes(note)) {
+              notes.push({
+                fret: fret,
+                name: this.toname(note),
+                x: (this.fretpos(fret - 1) + this.fretpos(fret)) / 2,
+                key: "n" + string + "_" + fret,
+              });
+            }
+          }
+
           result.push({
-            nr: i,
-            y: i * this.string_spacing,
+            nr: string,
+            y: string * this.string_spacing,
             tuning: this.toname(tuning),
+            notes: notes,
           });
         });
       return result;
@@ -110,6 +155,7 @@ export default {
       };
     },
   },
+
   methods: {
     fretpos(n) {
       // https://www.liutaiomottola.com/formulae/fret.htm
@@ -122,6 +168,9 @@ export default {
         sharps: this.sharps,
         pitchClass: true,
       });
+    },
+    normalize(notes) {
+      return notes.map((x) => x % 12);
     },
   },
 };

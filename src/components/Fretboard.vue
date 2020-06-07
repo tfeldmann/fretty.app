@@ -96,7 +96,6 @@ export default {
   data: function() {
     return {
       string_spacing: 30,
-      tuning_: this.tuning,
       notes_: this.notes,
       frets_: this.frets,
       sharps_: this.sharps,
@@ -104,6 +103,9 @@ export default {
   },
 
   computed: {
+    tuning_: function() {
+      return this.tuning;
+    },
     width: function() {
       return this.fretpos(this.frets - 1);
     },
@@ -112,32 +114,29 @@ export default {
     },
     strings: function() {
       let result = [];
-      this.tuning_
-        .slice()
-        .reverse()
-        .forEach((tuning, string) => {
-          // find notes
-          let normalized_notes = this.normalize(this.notes);
-          let notes = [];
-          for (let fret = 0; fret < this.frets; fret++) {
-            let note = (tuning + fret) % 12;
-            if (normalized_notes.includes(note)) {
-              notes.push({
-                fret: fret,
-                name: this.toname(note),
-                x: (this.fretpos(fret - 1) + this.fretpos(fret)) / 2,
-                key: "n" + string + "_" + fret,
-              });
-            }
+      this.tuning.forEach((tuning, string) => {
+        // find notes
+        let normalized_notes = this.normalize(this.notes);
+        let notes = [];
+        for (let fret = 0; fret < this.frets; fret++) {
+          let note = (tuning + fret) % 12;
+          if (normalized_notes.includes(note)) {
+            notes.push({
+              fret: fret,
+              name: this.toname(note),
+              x: (this.fretpos(fret - 1) + this.fretpos(fret)) / 2,
+              key: "n" + string + "_" + fret,
+            });
           }
+        }
 
-          result.push({
-            nr: string,
-            y: string * this.string_spacing,
-            tuning: this.toname(tuning),
-            notes: notes,
-          });
+        result.push({
+          nr: string,
+          y: string * this.string_spacing,
+          tuning: this.toname(tuning),
+          notes: notes,
         });
+      });
       return result;
     },
     fret_lines: function() {

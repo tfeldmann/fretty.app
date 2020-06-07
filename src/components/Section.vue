@@ -1,7 +1,6 @@
 <template>
   <div>
-    <p>Test</p>
-    <p>{{ usr_tuning }} {{ tuning }} {{ notes }}</p>
+    <p>{{ scale }}</p>
     <div class="settings">
       Tuning:
       <input type="text" v-model="usr_tuning" />
@@ -13,6 +12,11 @@
       <input type="checkbox" id="sharps" v-model="sharps" v-bind:value="true" />
       <label for="sharps">#</label>
     </div>
+
+    Scale: <input type="text" v-model="scale.tonic" size="5" /><v-select
+      :options="all_scales"
+      v-model="scale.type"
+    ></v-select>
 
     <input type="text" v-model="usr_tuning" />
     <Fretboard
@@ -26,13 +30,17 @@
 
 <script>
 import Fretboard from "./Fretboard.vue";
-import { Note } from "@tonaljs/tonal";
+import { Note, Scale } from "@tonaljs/tonal";
+import vSelect from "vue-select";
+
+import "vue-select/dist/vue-select.css";
 
 export default {
   name: "Section",
 
   components: {
     Fretboard,
+    "v-select": vSelect,
   },
 
   data: function() {
@@ -40,6 +48,8 @@ export default {
       usr_tuning: "E A D G",
       sharps: true,
       frets: 18,
+      scale: { tonic: "A", type: "minor pentatonic" },
+      all_scales: Scale.names(),
     };
   },
 
@@ -48,7 +58,8 @@ export default {
       return this.usr_tuning
         .trim()
         .split(" ")
-        .map(Note.chroma);
+        .map(Note.chroma)
+        .reverse();
     },
     notes: function() {
       return [60, 61, 62, 63, 65, 30];

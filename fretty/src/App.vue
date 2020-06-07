@@ -1,17 +1,46 @@
 <template>
   <div id="app">
-  <p>Test</p>
-    <SimpleFretboard v-bind:tuning="[60, 61, 62, 63, 64, 65]" v-bind:notes="[1, 5, 10, 20]" />
+    <pre
+      >{{ usr_tuning }} {{ tuning }} {{ notes }}
+    </pre>
+    <input type="text" v-model="usr_tuning" />
+    <p>fretty.app</p>
+    <Fretboard v-bind:tuning="tuning" v-bind:notes="notes" />
   </div>
 </template>
 
 <script>
-import SimpleFretboard from "./components/SimpleFretboard.vue";
+import Fretboard from "./components/Fretboard.vue";
+import { Note } from "@tonaljs/tonal";
 
 export default {
   name: "App",
   components: {
-    SimpleFretboard,
+    Fretboard,
+  },
+
+  data: function() {
+    return {
+      usr_tuning: "E A D G",
+    };
+  },
+
+  computed: {
+    tuning: function() {
+      return this.usr_tuning
+        .trim()
+        .split(" ")
+        .map(Note.chroma);
+    },
+    notes: function() {
+      return [60, 61, 62, 63, 65, 30];
+    },
+  },
+
+  methods: {
+    normalize(notes) {
+      return notes.map((x) => x % 12);
+    },
   },
 };
 </script>
@@ -21,7 +50,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 }

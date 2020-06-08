@@ -1,8 +1,5 @@
 <template>
-  <div id="app">
-    <p>fretty.app</p>
-    <Section />
-  </div>
+  <Section />
 </template>
 
 <script>

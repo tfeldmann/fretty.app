@@ -1,5 +1,5 @@
 <template>
-  <svg class="fretboard" width="800" height="300">
+  <svg class="fretboard" width="100%" height="300">
     <text font-size="11" x="10" y="20" fill="black">
       TODO: Tuning: E A D G
     </text>

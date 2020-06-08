@@ -20,19 +20,49 @@
     </style>
   </head>
   <body>
-    <noscript>
-      <strong
-        >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
-        properly without JavaScript enabled. Please enable it to
-        continue.</strong
-      >
-    </noscript>
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container">
+          <noscript>
+            <div class="notification">
+              <strong
+                >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't
+                work properly without JavaScript enabled. Please enable it to
+                continue.</strong
+              >
+            </div>
+          </noscript>
+
+          <h1 class="title">Fretty.app</h1>
+          <h2 class="subtitle">
+            A minimal and lightweight fretboard exploration tool for all stringed
+            instruments.
+          </h2>
+          <p>
+            Fretty shows musical scales for guitar, bass, ukulele or any other
+            stringed instrument.<br />
+            It supports an infinite amount of strings and frets in
+            <i>all tunings</i>.
+          </p>
+        </div>
+      </div>
+    </section>
     <div id="app"></div>
+
     <!-- built files will be auto injected -->
     <script
       data-goatcounter="https://fretty.goatcounter.com/count"
       async
       src="//gc.zgo.at/count.js"
     ></script>
+
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p>
+          <strong><%= htmlWebpackPlugin.options.title %></strong> by
+          <a href="https://tfeldmann.de">Thomas Feldmann</a>
+        </p>
+      </div>
+    </footer>
   </body>
 </html>

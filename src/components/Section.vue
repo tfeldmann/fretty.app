@@ -1,35 +1,44 @@
 <template>
-  <div>
-    <p>{{ scale }}</p>
-    <div class="settings">
-      Tuning:
-      <input type="text" v-model="usr_tuning" />
+  <section id="app">
+    <div class="container">
+      <b-field label="Tuning">
+        <b-input v-model="usr_tuning"></b-input>
+      </b-field>
 
-      Frets:
-      <input v-model.number="frets" type="number" size="4" min="1" max="200" />
+      <b-field label="Frets">
+        <b-numberinput
+          controls-position="compact"
+          v-model.number="frets"
+          min="1"
+          max="200"
+        >
+        </b-numberinput>
+      </b-field>
 
       Notation:
-      <input type="checkbox" id="sharps" v-model="sharps" v-bind:value="true" />
-      <label for="sharps">#</label>
-    </div>
+      <label class="checkbox">
+        <input type="checkbox" v-model="sharps" v-bind:value="true" />
+        #
+      </label>
 
-    <Fretboard
-      :tuning="tuning"
-      :notes="notes"
-      :sharps="sharps"
-      :frets="frets"
-    />
+      <Fretboard
+        :tuning="tuning"
+        :notes="notes"
+        :sharps="sharps"
+        :frets="frets"
+      />
 
-    <div>
-      <label for="scale">Scale:</label>
-      <input type="text" v-model="scale.tonic" list="tonics" />
-      <datalist id="tonics">
-        <option v-for="name in chromatic" :value="name" :key="name.id">
-        </option>
-      </datalist>
-      <v-select :options="all_scales" v-model="scale.type"></v-select>
+      <div>
+        <label for="scale">Scale:</label>
+        <input type="text" v-model="scale.tonic" list="tonics" />
+        <datalist id="tonics">
+          <option v-for="name in chromatic" :value="name" :key="name.id">
+          </option>
+        </datalist>
+        <v-select :options="all_scales" v-model="scale.type"></v-select>
+      </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

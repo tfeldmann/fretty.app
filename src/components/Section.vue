@@ -1,41 +1,45 @@
 <template>
   <section id="app">
     <div class="container">
-      <b-field label="Tuning">
-        <b-input v-model="usr_tuning"></b-input>
-      </b-field>
+      <div class="content">
+        <b-field label="Tuning">
+          <b-input v-model="usr_tuning"></b-input>
+        </b-field>
 
-      <b-field label="Frets">
-        <b-numberinput
-          controls-position="compact"
-          v-model.number="frets"
-          min="1"
-          max="200"
-        >
-        </b-numberinput>
-      </b-field>
+        <b-field label="Frets">
+          <b-numberinput
+            controls-position="compact"
+            v-model.number="frets"
+            min="1"
+            max="200"
+          >
+          </b-numberinput>
+        </b-field>
 
-      Notation:
-      <label class="checkbox">
-        <input type="checkbox" v-model="sharps" v-bind:value="true" />
-        #
-      </label>
+        Notation:
+        <label class="checkbox">
+          <input type="checkbox" v-model="sharps" v-bind:value="true" />
+          #
+        </label>
 
-      <Fretboard
-        :tuning="tuning"
-        :notes="notes"
-        :sharps="sharps"
-        :frets="frets"
-      />
+        <div class="container">
+          <Fretboard
+            :tuning="tuning"
+            :notes="notes"
+            :sharps="sharps"
+            :frets="frets"
+          />
+        </div>
 
-      <div>
-        <label for="scale">Scale:</label>
-        <input type="text" v-model="scale.tonic" list="tonics" />
-        <datalist id="tonics">
-          <option v-for="name in chromatic" :value="name" :key="name.id">
-          </option>
-        </datalist>
-        <v-select :options="all_scales" v-model="scale.type"></v-select>
+        <div>
+          <label for="scale">Scale:</label>
+          <input type="text" v-model="scale.tonic" list="tonics" />
+          <datalist id="tonics">
+            <option v-for="name in chromatic" :value="name" :key="name.id">
+            </option>
+          </datalist>
+          <v-select :options="all_scales" v-model="scale.type"></v-select>
+        </div>
       </div>
     </div>
   </section>

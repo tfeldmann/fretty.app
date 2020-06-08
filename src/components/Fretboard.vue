@@ -1,10 +1,12 @@
 <template>
-  <svg class="fretboard" width="100%" height="300">
+  <svg class="fretboard" :width="width + 150" :height="height + 100">
+    <!--
     <text font-size="11" x="10" y="20" fill="black">
       TODO: Tuning: E A D G
     </text>
+    -->
 
-    <g transform="translate(50, 50)">
+    <g transform="translate(80, 50)">
       <!--
       <text
         font-size="11"
@@ -111,7 +113,7 @@ export default {
 
   data: function() {
     return {
-      string_spacing: 30,
+      string_spacing: 25,
       notes_: this.notes,
       frets_: this.frets,
       sharps_: this.sharps,
@@ -174,7 +176,7 @@ export default {
   methods: {
     fretpos(n) {
       // https://www.liutaiomottola.com/formulae/fret.htm
-      const s = 1000;
+      const s = 1300;
       let d = s - s / Math.pow(2, n / 12);
       return Math.round(d * 1000) / 1000;
     },
@@ -194,7 +196,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .fretboard {
-  border: 1px solid silver;
+  /* border: 1px solid silver;*/
 }
 .list-enter-active,
 .list-leave-active {

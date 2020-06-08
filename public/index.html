@@ -7,9 +7,6 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <title><%= htmlWebpackPlugin.options.title %></title>
     <style>
-      .fretboard {
-        border: 1px solid red;
-      }
       .fade-enter-active,
       .fade-leave-active {
         transition: opacity 0.2s;
@@ -20,7 +17,7 @@
     </style>
   </head>
   <body>
-    <section class="hero">
+    <section class="hero is-light">
       <div class="hero-body">
         <div class="container">
           <noscript>
@@ -33,16 +30,16 @@
             </div>
           </noscript>
 
-          <h1 class="title">Fretty.app</h1>
+          <h1 class="title">🎸 Fretty</h1>
           <h2 class="subtitle">
-            A minimal and lightweight fretboard exploration tool for all stringed
+            An interactive fretboard exploration tool for all stringed
             instruments.
           </h2>
           <p>
             Fretty shows musical scales for guitar, bass, ukulele or any other
             stringed instrument.<br />
-            It supports an infinite amount of strings and frets in
-            <i>all tunings</i>.
+            It supports every single tuning and an infinite amount of strings
+            and frets. Have fun playing!<br />
           </p>
         </div>
       </div>
@@ -59,8 +56,8 @@
     <footer class="footer">
       <div class="content has-text-centered">
         <p>
-          <strong><%= htmlWebpackPlugin.options.title %></strong> by
-          <a href="https://tfeldmann.de">Thomas Feldmann</a>
+          made with 🤘 by
+          <a href="https://tfeldmann.de" target="_blank">Thomas Feldmann</a>
         </p>
       </div>
     </footer>

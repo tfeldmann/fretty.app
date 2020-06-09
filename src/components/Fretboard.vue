@@ -95,20 +95,20 @@ export default {
   props: {
     tuning: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     notes: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     frets: {
       type: Number,
-      default: 18,
+      default: 18
     },
     sharps: {
       type: Boolean,
-      default: true, // TODO: "sharps", "flats" or "interval"
-    },
+      default: true // TODO: "sharps", "flats" or "interval"
+    }
   },
 
   data() {
@@ -116,7 +116,7 @@ export default {
       string_spacing: 25,
       notes_: this.notes,
       frets_: this.frets,
-      sharps_: this.sharps,
+      sharps_: this.sharps
     };
   },
 
@@ -143,7 +143,7 @@ export default {
               fret: fret,
               name: this.toname(note),
               x: (this.fretpos(fret - 1) + this.fretpos(fret)) / 2,
-              key: "n" + string + "_" + fret,
+              key: "n" + string + "_" + fret
             });
           }
         }
@@ -152,7 +152,7 @@ export default {
             nr: string,
             y: string * this.string_spacing,
             tuning: this.toname(tuning),
-            notes: notes,
+            notes: notes
           });
         }
       });
@@ -163,15 +163,15 @@ export default {
       for (let i = 1; i < this.frets; i++) {
         lines.push({
           nr: i,
-          x: this.fretpos(i),
+          x: this.fretpos(i)
         });
       }
       return {
         y1: this.height == 0 ? -this.string_spacing / 4 : 0,
         y2: this.height == 0 ? this.string_spacing / 4 : this.height,
-        lines: lines,
+        lines: lines
       };
-    },
+    }
   },
 
   methods: {
@@ -184,13 +184,13 @@ export default {
     toname(x) {
       return Midi.midiToNoteName(x, {
         sharps: this.sharps,
-        pitchClass: true,
+        pitchClass: true
       });
     },
     normalize(notes) {
-      return notes.map((x) => x % 12);
-    },
-  },
+      return notes.map(x => x % 12);
+    }
+  }
 };
 </script>
 

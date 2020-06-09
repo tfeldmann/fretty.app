@@ -66,7 +66,7 @@
             :data="all_scales"
             clear-on-select="true"
             field=""
-            @select="(option) => (selected = option)"
+            @select="option => (selected = option)"
           >
           </b-autocomplete>
         </b-field>
@@ -99,7 +99,7 @@ export default {
   name: "Section",
 
   components: {
-    Fretboard,
+    Fretboard
   },
 
   data: function() {
@@ -108,7 +108,7 @@ export default {
       sharps: "sharps",
       frets: 18,
       scale: { tonic: "A", type: "minor pentatonic" },
-      all_scales: Scale.names(),
+      all_scales: Scale.names()
     };
   },
 
@@ -132,20 +132,20 @@ export default {
     },
     scale_search() {
       return this.all_scales;
-    },
+    }
   },
 
   methods: {
     normalize(notes) {
-      return notes.map((x) => x % 12);
+      return notes.map(x => x % 12);
     },
     toname(x) {
       return Midi.midiToNoteName(x, {
         sharps: this.sharps == "sharps",
-        pitchClass: true,
+        pitchClass: true
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

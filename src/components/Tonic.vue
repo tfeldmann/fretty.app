@@ -73,7 +73,7 @@ export default {
   name: "BNumberinput",
   components: {
     [Icon.name]: Icon,
-    [Input.name]: Input,
+    [Input.name]: Input
   },
   mixins: [FormElementMixin],
   inheritAttrs: false,
@@ -85,27 +85,27 @@ export default {
     disabled: Boolean,
     type: {
       type: String,
-      default: "is-primary",
+      default: "is-primary"
     },
     editable: {
       type: Boolean,
-      default: true,
+      default: true
     },
     controls: {
       type: Boolean,
-      default: true,
+      default: true
     },
     controlsRounded: {
       type: Boolean,
-      default: false,
+      default: false
     },
-    controlsPosition: String,
+    controlsPosition: String
   },
   data() {
     return {
       newValue: !isNaN(this.value) ? this.value : parseFloat(this.min) || 0,
       newStep: this.step || 1,
-      _elementRef: "input",
+      _elementRef: "input"
     };
   },
   computed: {
@@ -121,13 +121,13 @@ export default {
         this.newValue = newValue;
         this.$emit("input", newValue);
         !this.isValid && this.$refs.input.checkHtml5Validity();
-      },
+      }
     },
     fieldClasses() {
       return [
         { "has-addons": this.controlsPosition === "compact" },
         { "is-grouped": this.controlsPosition !== "compact" },
-        { "is-expanded": this.expanded },
+        { "is-expanded": this.expanded }
       ];
     },
     buttonClasses() {
@@ -157,7 +157,7 @@ export default {
         return step.substring(index + 1).length;
       }
       return 0;
-    },
+    }
   },
   watch: {
     /**
@@ -166,7 +166,7 @@ export default {
      */
     value(value) {
       this.newValue = value;
-    },
+    }
   },
   methods: {
     decrement() {
@@ -211,7 +211,7 @@ export default {
       }
       clearInterval(this._$intervalRef);
       this._$intervalRef = null;
-    },
-  },
+    }
+  }
 };
 </script>

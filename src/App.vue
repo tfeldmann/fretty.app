@@ -8,8 +8,8 @@ import Section from "./components/Section.vue";
 export default {
   name: "App",
   components: {
-    Section,
-  },
+    Section
+  }
 };
 </script>
 

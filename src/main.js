@@ -8,7 +8,8 @@ import {
   Button,
   Dropdown,
   Numberinput,
-  Radio
+  Radio,
+  Tabs,
 } from "buefy";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -16,14 +17,16 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faPlus,
   faMinus,
-  faTimesCircle
+  faTimesCircle,
+  faAngleDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 library.add(
   faPlus,
   faMinus,
-  faTimesCircle
+  faTimesCircle,
+  faAngleDown,
 );
 Vue.component("vue-fontawesome", FontAwesomeIcon);
 
@@ -36,6 +39,7 @@ Vue.use(Button);
 Vue.use(Dropdown);
 Vue.use(Numberinput);
 Vue.use(Radio);
+Vue.use(Tabs);
 
 // https://buefy.org/documentation/constructor-options
 ConfigProgrammatic.setOptions({

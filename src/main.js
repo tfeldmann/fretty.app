@@ -8,7 +8,7 @@ import {
   Button,
   Dropdown,
   Numberinput,
-  Radio,
+  Radio
 } from "buefy";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -29,7 +29,7 @@ import {
   faCaretUp,
   faUpload,
   faPlus,
-  faMinus,
+  faMinus
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -67,11 +67,11 @@ Vue.use(Radio);
 ConfigProgrammatic.setOptions({
   defaultIconComponent: "vue-fontawesome",
   defaultIconPack: "fas",
-  defaultContainerElement: "#content",
+  defaultContainerElement: "#content"
 });
 
 Vue.config.productionTip = false;
 
 new Vue({
-  render: (h) => h(App),
+  render: h => h(App)
 }).$mount("#app");

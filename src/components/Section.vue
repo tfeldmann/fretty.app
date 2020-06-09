@@ -34,6 +34,7 @@
         </b-field>
         <b-field label="Frets">
           <b-numberinput
+            icon-pack="fas"
             controls-position="compact"
             v-model.number="frets"
             min="1"
@@ -92,8 +93,7 @@
 
 <script>
 import Fretboard from "./Fretboard.vue";
-import { Note, Scale } from "@tonaljs/tonal";
-import { Midi } from "@tonaljs/tonal";
+import { Note, Scale, Midi } from "@tonaljs/tonal";
 
 export default {
   name: "Section",

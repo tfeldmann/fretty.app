@@ -29,7 +29,8 @@ import {
   faCaretUp,
   faUpload,
   faPlus,
-  faMinus
+  faMinus,
+  faTimesCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -49,7 +50,8 @@ library.add(
   faCaretUp,
   faUpload,
   faPlus,
-  faMinus
+  faMinus,
+  faTimesCircle
 );
 Vue.component("vue-fontawesome", FontAwesomeIcon);
 

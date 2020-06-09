@@ -60,11 +60,11 @@
         <b-field label="Scale">
           <b-autocomplete
             v-model="scale.type"
-            keep-first="true"
-            clearable="true"
-            open-on-focus="true"
+            :keep-first="true"
+            :clearable="true"
+            :open-on-focus="true"
             :data="all_scales"
-            clear-on-select="true"
+            :clear-on-select="true"
             field=""
             @select="option => (selected = option)"
           >
@@ -82,9 +82,6 @@
           />
         </div>
 
-        <div>
-          <v-select :options="all_scales" v-model="scale.type"></v-select>
-        </div>
       </div>
     </div>
   </section>

@@ -21,7 +21,7 @@
               >
                 <div class="modal-card" style="width:300px;">
                   <section class="modal-card-body">
-                    TODO: Auswahl
+                    [Todo] list common tunings
                   </section>
                   <footer class="modal-card-foot">
                     <button class="button is-primary">Select</button>

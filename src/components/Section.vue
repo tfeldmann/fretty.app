@@ -1,27 +1,34 @@
 <template>
   <section id="app">
     <div class="container">
+      <b-field grouped group-multiline>
+        <div class="control">
+          <b-field label="Tuning">
+            <b-input v-model="usr_tuning"></b-input>
+          </b-field>
+        </div>
+        <div class="control">
+          <b-field label="Frets">
+            <b-numberinput
+              controls-position="compact"
+              v-model.number="frets"
+              min="1"
+              max="200"
+            >
+            </b-numberinput>
+          </b-field>
+        </div>
+        <div class="control">
+      Notation:
+      <label class="checkbox">
+        <input type="checkbox" v-model="sharps" v-bind:value="true" />
+        #
+      </label>
+      </div>
+      </b-field>
+
+
       <div class="content">
-        <b-field label="Tuning">
-          <b-input v-model="usr_tuning"></b-input>
-        </b-field>
-
-        <b-field label="Frets">
-          <b-numberinput
-            controls-position="compact"
-            v-model.number="frets"
-            min="1"
-            max="200"
-          >
-          </b-numberinput>
-        </b-field>
-
-        Notation:
-        <label class="checkbox">
-          <input type="checkbox" v-model="sharps" v-bind:value="true" />
-          #
-        </label>
-
         <div class="container">
           <Fretboard
             :tuning="tuning"

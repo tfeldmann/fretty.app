@@ -111,7 +111,7 @@ export default {
     },
   },
 
-  data: function() {
+  data() {
     return {
       string_spacing: 25,
       notes_: this.notes,

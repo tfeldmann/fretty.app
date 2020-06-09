@@ -34,7 +34,6 @@
         </b-field>
         <b-field label="Frets">
           <b-numberinput
-            icon-pack="fas"
             controls-position="compact"
             v-model.number="frets"
             min="1"

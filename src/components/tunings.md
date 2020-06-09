@@ -1,4 +1,7 @@
 
+# Sitar
+C C G C G C F x C C B C D E F G A B C D E
+
 # Violin 
 Standard: G D A E
 

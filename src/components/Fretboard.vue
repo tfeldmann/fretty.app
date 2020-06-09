@@ -13,7 +13,7 @@
         :x="width"
         :y="height + 20"
         fill="gray"
-        alignment-baseline="hanging"
+        dominant-baseline="hanging"
         text-anchor="end"
       >
         created with fretty.app
@@ -73,7 +73,7 @@
               font-size="11"
               :x="note.x"
               :y="string.y"
-              alignment-baseline="middle"
+              dominant-baseline="central"
               fill="black"
               text-anchor="middle"
             >
@@ -147,13 +147,14 @@ export default {
             });
           }
         }
-
-        result.push({
-          nr: string,
-          y: string * this.string_spacing,
-          tuning: this.toname(tuning),
-          notes: notes,
-        });
+        if (tuning != undefined) {
+          result.push({
+            nr: string,
+            y: string * this.string_spacing,
+            tuning: this.toname(tuning),
+            notes: notes,
+          });
+        }
       });
       return result;
     },

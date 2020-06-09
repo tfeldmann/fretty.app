@@ -1,0 +1,24 @@
+- Embed disqus
+  >> npm install -s vue-disqus
+
+  import Vue from 'vue'
+  import VueDisqus from 'vue-disqus'
+
+  ## enable globally:
+
+  Vue.use(VueDisqus, {
+    shortname: 'your-shortname-disqus'
+  })
+
+  global templ:
+  <template>
+    <div class='comments'>
+      <Disqus />
+    </div>
+  </template>
+
+- Remove vue-select and use autocomplete
+
+- Neue Farbpalette:
+https://www.jordanprindledesigns.com/blog/color-palettes
+https://www.jordanprindledesigns.com/blog/15-more-color-palettes

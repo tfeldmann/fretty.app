@@ -1,14 +1,12 @@
 import Vue from "vue";
-import Buefy from "buefy";
-import "buefy/dist/buefy.css";
-import "@fortawesome/fontawesome-free/css/all.css";
-import "@fortawesome/fontawesome-free/js/all.js";
 import App from "./App.vue";
+import Buefy from "buefy";
+import "./assets/scss/app.scss";
 
 Vue.use(Buefy, {
   defaultIconPack: "fas",
-  defaultContainerElement: "#content",
 });
+
 Vue.config.productionTip = false;
 
 new Vue({

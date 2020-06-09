@@ -93,17 +93,13 @@
 <script>
 import Fretboard from "./Fretboard.vue";
 import { Note, Scale } from "@tonaljs/tonal";
-import vSelect from "vue-select";
 import { Midi } from "@tonaljs/tonal";
-
-import "vue-select/dist/vue-select.css";
 
 export default {
   name: "Section",
 
   components: {
     Fretboard,
-    "v-select": vSelect,
   },
 
   data: function() {

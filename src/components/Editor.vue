@@ -7,23 +7,29 @@
           <b-field>
             <template slot="label">
               Tuning
-              <b-dropdown
-                position="is-bottom-right"
-                append-to-body
-                aria-role="menu"
-                trap-focus
-              >
+              <b-dropdown position="is-bottom-right" append-to-body aria-role="menu" trap-focus>
                 <a slot="trigger" role="button">(browse)</a>
 
-                <b-dropdown-item
-                  aria-role="menu-item"
-                  :focusable="false"
-                  custom
-                  paddingless
-                >
+                <b-dropdown-item aria-role="menu-item" :focusable="false" custom paddingless>
                   <div class="modal-card" style="width:300px;">
                     <section class="modal-card-body">
-                      <pre>{{ tunings }}</pre>
+                      <!--<b-field>
+                        <p class="control">
+                          <b-dropdown>
+                            <button class="button" slot="trigger">
+                              <span>Filters</span>
+                              <b-icon icon="menu-down"></b-icon>
+                            </button>
+
+                            <b-dropdown-item value="open_issues">Open Issues and Pull Requests</b-dropdown-item>
+                            <b-dropdown-item value="your_issues">Your Issues</b-dropdown-item>
+                            <b-dropdown-item value="pull_requests">Your Pull Requests</b-dropdown-item>
+                            <b-dropdown-item value="everything">Everything</b-dropdown-item>
+                          </b-dropdown>
+                        </p>
+                        <b-input icon="magnify" type="search" placeholder="Search..."></b-input>
+                      </b-field>-->
+                      <b-table :data="tunings" :columns="tuning_columns"></b-table>
                     </section>
                     <footer class="modal-card-foot">
                       <button class="button is-primary">Select</button>
@@ -35,13 +41,7 @@
             <b-input v-model="usr_tuning"></b-input>
           </b-field>
           <b-field label="Frets">
-            <b-numberinput
-              controls-position="compact"
-              v-model.number="frets"
-              min="1"
-              max="200"
-            >
-            </b-numberinput>
+            <b-numberinput controls-position="compact" v-model.number="frets" min="1" max="200"></b-numberinput>
           </b-field>
           <b-field label="Notation">
             <b-field>
@@ -57,7 +57,7 @@
 
           <!-- Field Scale -->
           <b-field label="Tonic:">
-            <b-input v-model="scale.tonic" size="4"></b-input>
+            <b-input v-model="scale.tonic"></b-input>
           </b-field>
           <b-field label="Scale:">
             <b-autocomplete
@@ -68,20 +68,14 @@
               clearable
               append-to-body
               @select="(option) => (selected = option)"
-            >
-            </b-autocomplete>
+            ></b-autocomplete>
           </b-field>
         </b-field>
       </div>
     </div>
 
     <div class="card-image" style="text-align:center; overflow-x: auto;">
-      <Fretboard
-        :tuning="tuning"
-        :notes="notes"
-        :sharps="sharps"
-        :frets="frets"
-      />
+      <Fretboard :tuning="tuning" :notes="notes" :sharps="sharps" :frets="frets" />
     </div>
   </div>
 </template>
@@ -98,7 +92,7 @@ export default {
   name: "Editor",
 
   components: {
-    Fretboard,
+    Fretboard
     // NoteSelect,
   },
 
@@ -109,6 +103,21 @@ export default {
       frets: 18,
       scale: { tonic: "A", type: "minor pentatonic" },
       tunings: Tunings,
+      tuning_columns: [
+        {
+          field: "instrument",
+          label: "Instrument"
+        },
+        {
+          field: "name",
+          label: "Name"
+        },
+        {
+          field: "tuning",
+          label: "Tuning",
+          centered: true
+        }
+      ]
     };
   },
 
@@ -127,11 +136,8 @@ export default {
       let name = this.scale.tonic + " " + this.scale.type;
       return Scale.get(name);
     },
-    chromatic: function() {
-      return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(this.toname);
-    },
     scale_search() {
-      return ALL_SCALES.filter((option) => {
+      return ALL_SCALES.filter(option => {
         return (
           option
             .toString()
@@ -139,20 +145,20 @@ export default {
             .indexOf(this.scale.type.toLowerCase()) >= 0
         );
       });
-    },
+    }
   },
 
   methods: {
     normalize(notes) {
-      return notes.map((x) => x % 12);
+      return notes.map(x => x % 12);
     },
     toname(x) {
       return Midi.midiToNoteName(x, {
         sharps: this.sharps == "sharps",
-        pitchClass: true,
+        pitchClass: true
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

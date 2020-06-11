@@ -10,6 +10,7 @@ import {
   Numberinput,
   Radio,
   Tabs,
+  Table,
 } from "buefy";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -40,6 +41,7 @@ Vue.use(Dropdown);
 Vue.use(Numberinput);
 Vue.use(Radio);
 Vue.use(Tabs);
+Vue.use(Table);
 
 // https://buefy.org/documentation/constructor-options
 ConfigProgrammatic.setOptions({

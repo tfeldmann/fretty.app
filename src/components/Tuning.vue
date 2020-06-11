@@ -2,7 +2,7 @@
   <div class="editor">
     <div class="columns is-multiline is-centered">
       <!-- column notes -->
-      <div class="column">
+      <div class="column" style="align-items: flex-end">
         <b-field grouped group-multiline position="is-centered">
           <b-field>
             <template slot="label">
@@ -23,7 +23,7 @@
                 >
                   <div class="modal-card" style="width:300px;">
                     <section class="modal-card-body">
-                      <pre>{{ tunings }}</pre>
+                      [Todo] list common tunings
                     </section>
                     <footer class="modal-card-foot">
                       <button class="button is-primary">Select</button>
@@ -54,28 +54,48 @@
               </b-radio-button>
             </b-field>
           </b-field>
-
-          <!-- Field Scale -->
-          <b-field label="Tonic:">
-            <b-input v-model="scale.tonic" size="4"></b-input>
-          </b-field>
-          <b-field label="Scale:">
-            <b-autocomplete
-              v-model="scale.type"
-              :data="scale_search"
-              keep-first
-              open-on-focus
-              clearable
-              append-to-body
-              @select="(option) => (selected = option)"
-            >
-            </b-autocomplete>
-          </b-field>
         </b-field>
+      </div>
+
+      <!-- column: tuning / frets -->
+      <div class="column" style="align-items: flex-end">
+        <b-tabs size="is-small" position="is-centered">
+          <!-- tab: scale -->
+          <b-tab-item label="Scale">
+            <b-field grouped group-multiline position="is-centered">
+              <b-field label="Tonic:" horizontal>
+                <b-input v-model="scale.tonic" size="4"></b-input>
+              </b-field>
+              <b-autocomplete
+                v-model="scale.type"
+                :keep-first="true"
+                :clearable="true"
+                :open-on-focus="true"
+                :data="all_scales"
+                :clear-on-select="true"
+                field=""
+                @select="(option) => (selected = option)"
+              >
+              </b-autocomplete>
+            </b-field>
+          </b-tab-item>
+
+          <!-- tab: chord -->
+          <b-tab-item label="Chord">
+            <b-field grouped group-multiline position="is-centered">
+              <b-field label="Chord:" horizontal>
+                <b-input v-model="scale.tonic" size="4"></b-input>
+              </b-field>
+            </b-field>
+          </b-tab-item>
+
+          <!-- tab: note -->
+          <b-tab-item label="Notes">Notes</b-tab-item>
+        </b-tabs>
       </div>
     </div>
 
-    <div class="card-image" style="text-align:center; overflow-x: auto;">
+    <div class="card-image" style="text-align:center">
       <Fretboard
         :tuning="tuning"
         :notes="notes"
@@ -88,18 +108,13 @@
 
 <script>
 import Fretboard from "./Fretboard.vue";
-// import NoteSelect from "./NoteSelect.vue";
 import { Note, Scale, Midi } from "@tonaljs/tonal";
-import { Tunings } from "../tunings.js";
-
-const ALL_SCALES = Object.freeze(Scale.names());
 
 export default {
   name: "Editor",
 
   components: {
     Fretboard,
-    // NoteSelect,
   },
 
   data: function() {
@@ -108,7 +123,7 @@ export default {
       sharps: "sharps",
       frets: 18,
       scale: { tonic: "A", type: "minor pentatonic" },
-      tunings: Tunings,
+      all_scales: Scale.names(),
     };
   },
 
@@ -131,14 +146,7 @@ export default {
       return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(this.toname);
     },
     scale_search() {
-      return ALL_SCALES.filter((option) => {
-        return (
-          option
-            .toString()
-            .toLowerCase()
-            .indexOf(this.scale.type.toLowerCase()) >= 0
-        );
-      });
+      return this.all_scales;
     },
   },
 

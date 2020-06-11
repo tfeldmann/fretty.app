@@ -7,7 +7,7 @@
         </div>
         <footer class="card-footer">
           <a href="#" class="card-footer-item">Add another</a>
-          <a href="#" class="card-footer-item">Remove</a>
+          <a href="#" class="card-footer-item" disabled>Remove</a>
           <a href="#" class="card-footer-item">Share</a>
         </footer>
       </div>

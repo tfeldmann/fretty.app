@@ -1,4 +1,23 @@
 <template>
+    <b-input
+      type="text"
+      ref="input"
+      v-on:input="computedValue"
+      v-model="computedValue"
+      v-bind="$attrs"
+      :size="size"
+      :disabled="disabled"
+      :readonly="!editable"
+      :loading="loading"
+      :rounded="rounded"
+      :icon="icon"
+      :icon-pack="iconPack"
+      :autocomplete="autocomplete"
+      :expanded="expanded"
+      :use-html5-validation="false"
+      @focus="$emit('focus', $event)"
+      @blur="$emit('blur', $event)"
+    />
   <div class="b-numberinput field" :class="fieldClasses">
     <p
       v-if="controls"
@@ -12,7 +31,6 @@
         type="button"
         class="button"
         :class="buttonClasses"
-        :disabled="disabled || disabledMin"
         @mousedown="onStartLongPress($event, false)"
         @touchstart.prevent="onStartLongPress($event, false)"
         @click="onControlClick($event, false)"
@@ -21,13 +39,11 @@
       </button>
     </p>
     <b-input
-      type="number"
+      type="text"
       ref="input"
-      v-model.number="computedValue"
+      :value="computedValue"
+      v-model="computedValue"
       v-bind="$attrs"
-      :step="newStep"
-      :max="max"
-      :min="min"
       :size="size"
       :disabled="disabled"
       :readonly="!editable"
@@ -37,7 +53,7 @@
       :icon-pack="iconPack"
       :autocomplete="autocomplete"
       :expanded="expanded"
-      :use-html5-validation="useHtml5Validation"
+      :use-html5-validation="false"
       @focus="$emit('focus', $event)"
       @blur="$emit('blur', $event)"
     />
@@ -53,7 +69,6 @@
         type="button"
         class="button"
         :class="buttonClasses"
-        :disabled="disabled || disabledMax"
         @mousedown="onStartLongPress($event, true)"
         @touchstart.prevent="onStartLongPress($event, true)"
         @click="onControlClick($event, true)"
@@ -65,99 +80,71 @@
 </template>
 
 <script>
-import Icon from "../icon/Icon";
-import Input from "../input/Input";
-import FormElementMixin from "../../utils/FormElementMixin";
+import { Midi, Note } from "@tonaljs/tonal";
+import Icon from "buefy/src/components/icon/Icon";
+import Input from "buefy/src/components/input/Input";
+import FormElementMixin from "buefy/src/utils/FormElementMixin";
 
 export default {
-  name: "BNumberinput",
+  name: "NoteSelect",
   components: {
     [Icon.name]: Icon,
-    [Input.name]: Input
+    [Input.name]: Input,
   },
   mixins: [FormElementMixin],
   inheritAttrs: false,
   props: {
-    value: Number,
-    min: [Number, String],
-    max: [Number, String],
-    step: [Number, String],
+    note: Number,
     disabled: Boolean,
     type: {
       type: String,
-      default: "is-primary"
+      default: "is-primary",
     },
     editable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     controls: {
       type: Boolean,
-      default: true
+      default: true,
     },
     controlsRounded: {
       type: Boolean,
-      default: false
+      default: false,
     },
-    controlsPosition: String
+    controlsPosition: String,
   },
   data() {
     return {
-      newValue: !isNaN(this.value) ? this.value : parseFloat(this.min) || 0,
-      newStep: this.step || 1,
-      _elementRef: "input"
+      newValue: !isNaN(this.note) ? this.note : 0,
     };
   },
   computed: {
     computedValue: {
       get() {
-        return this.newValue;
+        return this.toname(this.newValue); // toname(Math.abs(this.newValue) % 12);
       },
       set(value) {
+        console.log(value);
+        value = Note.chroma(value);
         let newValue = value;
-        if (value === "") {
-          newValue = parseFloat(this.min) || null;
+        if (value != undefined) {
+          this.newValue = newValue;
+          this.$emit("input", newValue);
+          !this.isValid && this.$refs.input.checkHtml5Validity();
         }
-        this.newValue = newValue;
-        this.$emit("input", newValue);
-        !this.isValid && this.$refs.input.checkHtml5Validity();
-      }
+      },
     },
     fieldClasses() {
       return [
         { "has-addons": this.controlsPosition === "compact" },
         { "is-grouped": this.controlsPosition !== "compact" },
-        { "is-expanded": this.expanded }
+        { "is-expanded": this.expanded },
       ];
     },
     buttonClasses() {
       return [this.type, this.size, { "is-rounded": this.controlsRounded }];
     },
-    minNumber() {
-      return typeof this.min === "string" ? parseFloat(this.min) : this.min;
-    },
-    maxNumber() {
-      return typeof this.max === "string" ? parseFloat(this.max) : this.max;
-    },
-    stepNumber() {
-      return typeof this.newStep === "string"
-        ? parseFloat(this.newStep)
-        : this.newStep;
-    },
-    disabledMin() {
-      return this.computedValue - this.stepNumber < this.minNumber;
-    },
-    disabledMax() {
-      return this.computedValue + this.stepNumber > this.maxNumber;
-    },
-    stepDecimals() {
-      const step = this.stepNumber.toString();
-      const index = step.indexOf(".");
-      if (index >= 0) {
-        return step.substring(index + 1).length;
-      }
-      return 0;
-    }
   },
   watch: {
     /**
@@ -166,26 +153,20 @@ export default {
      */
     value(value) {
       this.newValue = value;
-    }
+    },
   },
   methods: {
+    toname(x) {
+      return Midi.midiToNoteName(x, {
+        sharps: this.sharps == "sharps",
+        pitchClass: true,
+      });
+    },
     decrement() {
-      if (
-        typeof this.minNumber === "undefined" ||
-        this.computedValue - this.stepNumber >= this.minNumber
-      ) {
-        const value = this.computedValue - this.stepNumber;
-        this.computedValue = parseFloat(value.toFixed(this.stepDecimals));
-      }
+      this.newValue = (this.newValue == 0) ? 11 : this.newValue - 1;
     },
     increment() {
-      if (
-        typeof this.maxNumber === "undefined" ||
-        this.computedValue + this.stepNumber <= this.maxNumber
-      ) {
-        const value = this.computedValue + this.stepNumber;
-        this.computedValue = parseFloat(value.toFixed(this.stepDecimals));
-      }
+      this.newValue = (this.newValue == 11) ? 0 : this.newValue + 1;
     },
     onControlClick(event, inc) {
       // IE 11 -> filter click event
@@ -211,7 +192,13 @@ export default {
       }
       clearInterval(this._$intervalRef);
       this._$intervalRef = null;
-    }
-  }
+    },
+  },
 };
 </script>
+
+<style scoped>
+input {
+  text-align: center;
+}
+</style>

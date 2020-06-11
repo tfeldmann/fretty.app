@@ -56,18 +56,50 @@
 
       <!-- notes -->
       <g v-for="string in strings" :key="'ng_' + string.nr">
-        <transition-group name="list" tag="g">
-          <g v-for="note in string.notes" :key="note.key">
+        <!-- hidden notes -->
+        <g v-for="note in string.hidden" :key="note.key">
+          <transition name="fade">
+            <g v-show="note.num == hover_note">
+              <!-- circle -->
+              <circle
+                :cx="note.x"
+                :cy="string.y"
+                r="10"
+                stroke-width="1"
+                fill="white"
+                stroke="white"
+              />
+              <!-- name -->
+              <text
+                font-size="11"
+                :x="note.x"
+                :y="string.y"
+                dominant-baseline="central"
+                fill="black"
+                text-anchor="middle"
+              >{{ note.name }}</text>
+            </g>
+          </transition>
+          <circle
+            @mouseleave="hover_note=-1"
+            @mouseover="hover_note=note.num"
+            r="10"
+            :cx="note.x"
+            :cy="string.y"
+            fill="transparent"
+          />
+        </g>
+        <!-- visible notes -->
+        <transition-group name="list" tag="g" appear>
+          <g v-for="note in string.visible" :key="note.key">
             <!-- circle -->
             <circle
               :cx="note.x"
               :cy="string.y"
               r="10"
-              stroke-width="1"
-              fill="white"
+              :fill="hover_note == note.num ? '#efefef' : 'white'"
               stroke="black"
             />
-
             <!-- name -->
             <text
               font-size="11"
@@ -76,9 +108,15 @@
               dominant-baseline="central"
               fill="black"
               text-anchor="middle"
-            >
-              {{ note.name }}
-            </text>
+            >{{ note.name }}</text>
+            <circle
+              @mouseleave="hover_note=-1"
+              @mouseover="hover_note=note.num"
+              r="10"
+              :cx="note.x"
+              :cy="string.y"
+              fill="transparent"
+            />
           </g>
         </transition-group>
       </g>
@@ -114,37 +152,37 @@ export default {
   data() {
     return {
       string_spacing: 25,
-      notes_: this.notes,
-      frets_: this.frets,
-      sharps_: this.sharps
+      hover_note: -1
     };
   },
 
   computed: {
-    tuning_: function() {
-      return this.tuning;
-    },
     width: function() {
       return this.fretpos(this.frets - 1);
     },
     height: function() {
-      return (this.tuning_.length - 1) * this.string_spacing;
+      return (this.tuning.length - 1) * this.string_spacing;
     },
     strings: function() {
       let result = [];
       this.tuning.forEach((tuning, string) => {
         // find notes
         let normalized_notes = this.normalize(this.notes);
-        let notes = [];
+        let visible = [];
+        let hidden = [];
         for (let fret = 0; fret < this.frets; fret++) {
-          let note = (tuning + fret) % 12;
-          if (normalized_notes.includes(note)) {
-            notes.push({
-              fret: fret,
-              name: this.toname(note),
-              x: (this.fretpos(fret - 1) + this.fretpos(fret)) / 2,
-              key: "n" + string + "_" + fret
-            });
+          let num = (tuning + fret) % 12;
+          let note = {
+            num: num,
+            fret: fret,
+            name: this.toname(num),
+            x: (this.fretpos(fret - 1) + this.fretpos(fret)) / 2,
+            key: "n" + string + "_" + fret
+          };
+          if (normalized_notes.includes(num)) {
+            visible.push(note);
+          } else {
+            hidden.push(note);
           }
         }
         if (tuning != undefined) {
@@ -152,7 +190,8 @@ export default {
             nr: string,
             y: string * this.string_spacing,
             tuning: this.toname(tuning),
-            notes: notes
+            visible: visible,
+            hidden: hidden
           });
         }
       });
@@ -177,9 +216,15 @@ export default {
   methods: {
     fretpos(n) {
       // https://www.liutaiomottola.com/formulae/fret.htm
-      const s = 1300;
-      let d = s - s / Math.pow(2, n / 12);
-      return Math.round(d * 1000) / 1000;
+      if (n <= 20) {
+        const s = 1300;
+        let d = s - s / Math.pow(2, n / 12);
+        return Math.round(d * 1000) / 1000;
+      } else {
+        let p19 = this.fretpos(19);
+        let p20 = this.fretpos(20);
+        return p20 + (p20 - p19) * (n - 20);
+      }
     },
     toname(x) {
       return Midi.midiToNoteName(x, {
@@ -196,15 +241,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.fretboard {
-  /* border: 1px solid silver;*/
-}
 .list-enter-active,
 .list-leave-active {
-  transition: all 0.5s ease;
+  transition: all 0.4s ease;
 }
 .list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
   opacity: 0;
-  transform: translateX(30px);
+  transform: translateX(20px);
 }
 </style>

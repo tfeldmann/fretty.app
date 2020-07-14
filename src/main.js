@@ -52,6 +52,8 @@ ConfigProgrammatic.setOptions({
 
 Vue.config.productionTip = false;
 
-new Vue({
-  render: h => h(App)
-}).$mount("#app");
+window.onload = function () {
+  new Vue({
+    render: h => h(App)
+  }).$mount("#app");
+}

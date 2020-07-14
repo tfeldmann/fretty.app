@@ -149,6 +149,9 @@ export default {
       type: Array,
       default: () => []
     },
+    inlays: {
+      default: () => [3, 5, 7, 9, 12, 15, 17, 19, 21]
+    },
     root: {
       type: Number
     },
@@ -166,7 +169,6 @@ export default {
     return {
       string_spacing: 25,
       hover_note: -1,
-      inlays: [3, 5, 7, 9, 12, 15, 17, 19, 21]
     };
   },
 

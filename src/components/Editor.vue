@@ -13,7 +13,8 @@
                 <b-dropdown-item aria-role="menu-item" :focusable="false" custom paddingless>
                   <div class="modal-card" style="width:300px;">
                     <section class="modal-card-body">
-                      <!--<b-field>
+                      <!-- Search and filter
+                      <b-field>
                         <p class="control">
                           <b-dropdown>
                             <button class="button" slot="trigger">
@@ -28,7 +29,8 @@
                           </b-dropdown>
                         </p>
                         <b-input icon="magnify" type="search" placeholder="Search..."></b-input>
-                      </b-field>-->
+                      </b-field>
+                      -->
                       <b-table :data="tunings" :columns="tuning_columns"></b-table>
                     </section>
                     <footer class="modal-card-foot">
@@ -68,6 +70,7 @@
               clearable
               append-to-body
               @select="(option) => (selected = option)"
+              @input="value => focus()"
             ></b-autocomplete>
           </b-field>
         </b-field>
@@ -75,7 +78,13 @@
     </div>
 
     <div class="card-image" style="text-align:center; overflow-x: auto;">
-      <Fretboard :tuning="tuning" :notes="notes" :sharps="sharps" :frets="frets" />
+      <Fretboard
+        :tuning="tuning"
+        :notes="notes"
+        :sharps="sharps"
+        :frets="frets"
+        :root="root"
+      />
     </div>
   </div>
 </template>
@@ -129,6 +138,9 @@ export default {
         .map(Note.chroma)
         .reverse();
     },
+    root: function() {
+      return Note.chroma(this.scale.tonic)
+    },
     notes: function() {
       return this.scale_info.notes.map(Note.chroma);
     },
@@ -157,6 +169,12 @@ export default {
         sharps: this.sharps == "sharps",
         pitchClass: true
       });
+    },
+    scale_input(x, y) {
+      console.log(y);
+      if (x == "") {
+        return;
+      }
     }
   }
 };

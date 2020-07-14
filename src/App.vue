@@ -1,6 +1,8 @@
 <template>
   <section class="section">
     <div class="container">
+      <Editor />
+      <!--
       <div class="card">
         <div class="card-content">
           <Editor />
@@ -11,6 +13,7 @@
           <a href="#" class="card-footer-item">Share</a>
         </footer>
       </div>
+      -->
     </div>
   </section>
 </template>
@@ -21,8 +24,8 @@ import Editor from "./components/Editor.vue";
 export default {
   name: "App",
   components: {
-    Editor,
-  },
+    Editor
+  }
 };
 </script>
 

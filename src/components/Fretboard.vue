@@ -1,13 +1,11 @@
 <template>
   <svg class="fretboard" :width="width + 150" :height="height + 100">
     <!--
-    <text font-size="11" x="10" y="20" fill="black">
-      TODO: Tuning: E A D G
-    </text>
+    <text font-size="11" x="10" y="20" fill="black">TODO: Tuning: E A D G</text>
     -->
 
     <g transform="translate(80, 50)">
-      <!--
+      <!-- Copyright
       <text
         font-size="11"
         :x="width"
@@ -17,7 +15,16 @@
         text-anchor="end"
       >
         created with fretty.app
-      </text>-->
+      </text>
+      -->
+
+      <!-- fret inlays -->
+      <polygon
+        v-for="inlay in inlay_polys"
+        :key="'inlay_' + inlay.fret"
+        :points="inlay.points"
+        style="fill:#eee"
+      />
 
       <!-- string lines -->
       <line
@@ -89,6 +96,7 @@
             fill="transparent"
           />
         </g>
+
         <!-- visible notes -->
         <transition-group name="list" tag="g" appear>
           <g v-for="note in string.visible" :key="note.key">
@@ -97,7 +105,8 @@
               :cx="note.x"
               :cy="string.y"
               r="10"
-              :fill="hover_note == note.num ? '#efefef' : 'white'"
+              :stroke-dasharray="hover_note == note.num && note.num != root ? '4,4' : '0'"
+              :fill="root == note.num ? 'black' : 'white'"
               stroke="black"
             />
             <!-- name -->
@@ -106,7 +115,8 @@
               :x="note.x"
               :y="string.y"
               dominant-baseline="central"
-              fill="black"
+              :fill="root == note.num ? 'white' : 'black'"
+              :font-weight="root == note.num ? 'bold' : 'normal'"
               text-anchor="middle"
             >{{ note.name }}</text>
             <circle
@@ -139,6 +149,9 @@ export default {
       type: Array,
       default: () => []
     },
+    root: {
+      type: Number
+    },
     frets: {
       type: Number,
       default: 18
@@ -152,7 +165,8 @@ export default {
   data() {
     return {
       string_spacing: 25,
-      hover_note: -1
+      hover_note: -1,
+      inlays: [3, 5, 7, 9, 12, 15, 17, 19, 21]
     };
   },
 
@@ -210,6 +224,57 @@ export default {
         y2: this.height == 0 ? this.string_spacing / 4 : this.height,
         lines: lines
       };
+    },
+    inlay_polys: function() {
+      let result = [];
+      for (let fret of this.inlays) {
+        if (fret >= this.frets) break;
+
+        const resize_x = 0.6;
+        const resize_y = fret == 12 ? 0.8 : 0.6;
+
+        let height = this.height;
+        let top = height / 2 - (height * resize_y) / 2;
+        if (height < 10) {
+          height = 10;
+          top = -5;
+        }
+        const bottom = top + height * resize_y;
+        const left = this.fretpos(fret - 1);
+        const right = this.fretpos(fret);
+        const width = right - left;
+
+        const nleft = left + width / 2 - (width * resize_x) / 2;
+        const nright = nleft + width * resize_x;
+
+        let points;
+        if (fret == 12) {
+          points = [
+            [nleft, top],
+            [nright, top],
+            [nright, bottom],
+            [nleft, bottom]
+          ];
+        } else {
+          points = [
+            [left + width / 2, top],
+            [nleft, height / 2],
+            [left + width / 2, bottom],
+            [nright, height / 2]
+          ];
+        }
+
+        let pointsstr = "";
+        for (let point of points) {
+          pointsstr += point[0].toString() + "," + point[1].toString() + " ";
+        }
+
+        result.push({
+          fret: fret,
+          points: pointsstr
+        });
+      }
+      return result;
     }
   },
 

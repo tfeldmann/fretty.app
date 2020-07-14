@@ -12,7 +12,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.13.1",
     "@fortawesome/vue-fontawesome": "^0.1.10",
     "@tonaljs/tonal": "^4.0.2",
-    "buefy": "git+https://github.com/buefy/buefy.git#b0b1b71d126e61ae658888e25b237df9cb5dce2b",
+    "buefy": "^0.8.20",
     "core-js": "^3.6.5",
     "vue": "^2.6.11"
   },

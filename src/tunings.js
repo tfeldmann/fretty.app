@@ -61,13 +61,16 @@ export const Tunings = Object.freeze([
 
   // http://bassguitarplayerworld.com/advanced/alternate-tunings/
   // https://www.schoolofrock.com/resources/bass-guitar/beginners-guide-to-tuning-a-bass-guitar
+  { instrument: "Bass", name: "Standard", tuning: "E A D G" },
   { instrument: "Bass", name: "Drop D", tuning: "D A D G" },
   { instrument: "Bass", name: "Drop C", tuning: "C G C F" },
   { instrument: "Bass", name: "Drop B", tuning: "B F# B E" },
   { instrument: "Bass", name: "D Standard", tuning: "D G C F" },
   { instrument: "Bass", name: "C to thirds", tuning: "C G C G" },
+
   { instrument: "Bass 5-String", name: "Standard", tuning: "B E A D G" },
   { instrument: "Bass 5-String", name: "High C", tuning: "E A D G C" },
+
   { instrument: "Bass 6-String", name: "Standard", tuning: "B E A D G C" },
 
   { instrument: "Ukulele", name: "C6", tuning: "G C E A" },

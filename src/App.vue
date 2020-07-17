@@ -1,22 +1,7 @@
 <template>
   <section class="section">
-    <div class="container">
-      <div v-for="editor in editors" v-bind:key="editor">
-        <Editor />
-        <a href="" class="text-center">{{editor}}</a>
-      </div>
-      <!--
-      <div class="card">
-        <div class="card-content">
-          <Editor />
-        </div>
-        <footer class="card-footer">
-          <a href="#" class="card-footer-item">Add another</a>
-          <a href="#" class="card-footer-item" disabled>Remove</a>
-          <a href="#" class="card-footer-item">Share</a>
-        </footer>
-      </div>
-      -->
+    <div class="container" v-for="(i, editor) in editors" v-bind:key="editor">
+      <Editor />
     </div>
   </section>
 </template>
@@ -31,9 +16,9 @@ export default {
   },
   data() {
     return {
-      editors: [1, 2, 3, 5]
+      editors: [1]
     };
-  },
+  }
 };
 </script>
 

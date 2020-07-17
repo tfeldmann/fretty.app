@@ -1,19 +1,19 @@
 <template>
-  <div class="editor">
-    <div class="columns is-multiline is-centered">
-      <!-- column notes -->
-      <div class="column">
-        <b-field grouped group-multiline position="is-centered">
-          <b-field>
-            <template slot="label">
-              Tuning
-              <b-dropdown position="is-bottom-right" append-to-body aria-role="menu" trap-focus>
-                <a slot="trigger" role="button">(browse)</a>
+  <div>
+    <div class="editor">
+      <div class="columns is-multiline is-centered">
+        <div class="column">
+          <b-field grouped group-multiline position="is-centered">
+            <b-field>
+              <template slot="label">
+                Tuning
+                <b-dropdown position="is-bottom-right" append-to-body aria-role="menu" trap-focus>
+                  <a slot="trigger" role="button">(browse)</a>
 
-                <b-dropdown-item aria-role="menu-item" :focusable="false" custom paddingless>
-                  <div class="modal-card" style="width:300px;">
-                    <section class="modal-card-body">
-                      <!-- Search and filter
+                  <b-dropdown-item aria-role="menu-item" :focusable="false" custom paddingless>
+                    <div class="modal-card" style="width:300px;">
+                      <section class="modal-card-body">
+                        <!-- Search and filter
                       <b-field>
                         <p class="control">
                           <b-dropdown>
@@ -30,61 +30,87 @@
                         </p>
                         <b-input icon="magnify" type="search" placeholder="Search..."></b-input>
                       </b-field>
-                      -->
-                      <b-table :data="tunings" :columns="tuning_columns"></b-table>
-                    </section>
-                    <footer class="modal-card-foot">
-                      <button class="button is-primary">Select</button>
-                    </footer>
-                  </div>
+                        -->
+                        <b-table :data="tunings" :columns="tuning_columns"></b-table>
+                      </section>
+                      <footer class="modal-card-foot">
+                        <button class="button is-primary">Select</button>
+                      </footer>
+                    </div>
+                  </b-dropdown-item>
+                </b-dropdown>
+              </template>
+              <b-input v-model="usr_tuning" icon="guitar"></b-input>
+            </b-field>
+
+            <!-- Field Scale -->
+            <b-field label="Tonic:">
+              <b-input v-model="scale.tonic" icon="music"></b-input>
+            </b-field>
+            <b-field label="Scale:">
+              <b-autocomplete
+                v-model="scale.type"
+                :data="scale_search"
+                keep-first
+                open-on-focus
+                clearable
+                append-to-body
+                @select="(option) => (selected = option)"
+                @input="value => focus()"
+              ></b-autocomplete>
+            </b-field>
+
+            <!-- Settings -->
+            <b-field>
+              <template slot="label">
+                <span style="color: transparent; user-select:none;">More</span>
+              </template>
+
+              <b-dropdown append-to-body aria-role="menu" trap-focus>
+                <b-button class="button" slot="trigger" icon-left="cog">Settings</b-button>
+
+                <b-dropdown-item aria-role="menu-item" :focusable="false" custom paddingless>
+                  <form action>
+                    <div class="modal-card" style="width:300px;">
+                      <section class="modal-card-body">
+                        <b-field label="Frets">
+                          <b-numberinput
+                            controls-position="compact"
+                            v-model.number="frets"
+                            min="1"
+                            max="200"
+                          ></b-numberinput>
+                        </b-field>
+                        <b-field label="Notation">
+                          <b-field>
+                            <b-radio-button v-model="sharps" native-value="sharps">
+                              <span>#</span>
+                            </b-radio-button>
+
+                            <b-radio-button v-model="sharps" native-value="flats">
+                              <span>b</span>
+                            </b-radio-button>
+                          </b-field>
+                        </b-field>
+                        <!-- <b-checkbox>Show piano</b-checkbox>-->
+                      </section>
+                      <footer class="modal-card-foot">
+                        <b-button @click="clickMe" icon-left="plus">add below</b-button>
+                        <b-button @click="clickMe" icon-left="trash">remove</b-button>
+                      </footer>
+                    </div>
+                  </form>
                 </b-dropdown-item>
               </b-dropdown>
-            </template>
-            <b-input v-model="usr_tuning"></b-input>
-          </b-field>
-          <b-field label="Frets">
-            <b-numberinput controls-position="compact" v-model.number="frets" min="1" max="200"></b-numberinput>
-          </b-field>
-          <b-field label="Notation">
-            <b-field>
-              <b-radio-button v-model="sharps" native-value="sharps">
-                <span>#</span>
-              </b-radio-button>
-
-              <b-radio-button v-model="sharps" native-value="flats">
-                <span>b</span>
-              </b-radio-button>
             </b-field>
+            <!-- /Settings -->
           </b-field>
-
-          <!-- Field Scale -->
-          <b-field label="Tonic:">
-            <b-input v-model="scale.tonic"></b-input>
-          </b-field>
-          <b-field label="Scale:">
-            <b-autocomplete
-              v-model="scale.type"
-              :data="scale_search"
-              keep-first
-              open-on-focus
-              clearable
-              append-to-body
-              @select="(option) => (selected = option)"
-              @input="value => focus()"
-            ></b-autocomplete>
-          </b-field>
-        </b-field>
+        </div>
       </div>
-    </div>
 
-    <div class="card-image" style="text-align:center; overflow-x: auto;">
-      <Fretboard
-        :tuning="tuning"
-        :notes="notes"
-        :sharps="sharps"
-        :frets="frets"
-        :root="root"
-      />
+      <div class="card-image" style="text-align:center; overflow-x: auto;">
+        <Fretboard :tuning="tuning" :notes="notes" :sharps="sharps" :frets="frets" :root="root" />
+      </div>
     </div>
   </div>
 </template>
@@ -139,7 +165,7 @@ export default {
         .reverse();
     },
     root: function() {
-      return Note.chroma(this.scale.tonic)
+      return Note.chroma(this.scale.tonic);
     },
     notes: function() {
       return this.scale_info.notes.map(Note.chroma);
@@ -161,6 +187,9 @@ export default {
   },
 
   methods: {
+    clickMe() {
+      alert("Clicked!!");
+    },
     normalize(notes) {
       return notes.map(x => x % 12);
     },

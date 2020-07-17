@@ -54,9 +54,36 @@ export const Tunings = Object.freeze([
   { instrument: "Guitar", name: "Charango", tuning: " G C E A E" },
   { instrument: "Guitar", name: "Cittern One", tuning: "C F C G C D" },
   { instrument: "Guitar", name: "Cittern Two", tuning: "C G C G C G" },
-  { instrument: "Guitar", name: "Dobro", tuning: "G B D G B D" },
+  { instrument: "Guitar", name: "Dobro Open G", tuning: "G B D G B D" },
   { instrument: "Guitar", name: "Lefty", tuning: "E B G D A E" },
   { instrument: "Guitar", name: "Mandoguitar", tuning: "C G D A E B" },
   { instrument: "Guitar", name: "Rusty Cage", tuning: "B A D G B E" },
+
+  // http://bassguitarplayerworld.com/advanced/alternate-tunings/
+  // https://www.schoolofrock.com/resources/bass-guitar/beginners-guide-to-tuning-a-bass-guitar
+  { instrument: "Bass", name: "Drop D", tuning: "D A D G" },
+  { instrument: "Bass", name: "Drop C", tuning: "C G C F" },
+  { instrument: "Bass", name: "Drop B", tuning: "B F# B E" },
+  { instrument: "Bass", name: "D Standard", tuning: "D G C F" },
+  { instrument: "Bass", name: "C to thirds", tuning: "C G C G" },
+  { instrument: "Bass 5-String", name: "Standard", tuning: "B E A D G" },
+  { instrument: "Bass 5-String", name: "High C", tuning: "E A D G C" },
+  { instrument: "Bass 6-String", name: "Standard", tuning: "B E A D G C" },
+
+  { instrument: "Ukulele", name: "C6", tuning: "G C E A" },
+  { instrument: "Ukulele", name: "D6", tuning: "A D F# B" },
+
+  { instrument: "Violin", name: "Standard", tuning: "G D A E" },
+  { instrument: "Violin", name: "Cajun", tuning: "F C G D" },
+  { instrument: "Violin", name: "Open G", tuning: "G D G B" },
+  { instrument: "Violin", name: "Sawmill", tuning: "G D G D" },
+  { instrument: "Violin", name: "Gee-Dad", tuning: "G D A D" },
+  { instrument: "Violin", name: "Open D", tuning: "D D A D" },
+  { instrument: "Violin", name: "High Bass, Old-Timey D", tuning: "A D A E" },
+  { instrument: "Violin", name: "Cross A", tuning: "A E A E" },
+
+  { instrument: "Russian Guitar", name: "Standard", tuning: "D G B D G B D" },
+  { instrument: "Russian Guitar", name: "Classical", tuning: "C G B D G B D" },
+
   { instrument: "Sitar", name: "Standard", tuning: "C C G C G C F x C C B C D E F G A B C D E" },
 ]);

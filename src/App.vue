@@ -1,7 +1,10 @@
 <template>
   <section class="section">
     <div class="container">
-      <Editor />
+      <div v-for="editor in editors" v-bind:key="editor">
+        <Editor />
+        <a href="" class="text-center">{{editor}}</a>
+      </div>
       <!--
       <div class="card">
         <div class="card-content">
@@ -25,7 +28,12 @@ export default {
   name: "App",
   components: {
     Editor
-  }
+  },
+  data() {
+    return {
+      editors: [1, 2, 3, 5]
+    };
+  },
 };
 </script>
 

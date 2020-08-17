@@ -1,6 +1,7 @@
 <template>
   <section class="section">
     <div class="container" v-for="(i, editor) in editors" v-bind:key="editor">
+      <note-select />
       <Editor />
     </div>
   </section>
@@ -8,11 +9,13 @@
 
 <script>
 import Editor from "./components/Editor.vue";
+import NoteSelect from "./components/NoteSelect.vue";
 
 export default {
   name: "App",
   components: {
-    Editor
+    Editor,
+    NoteSelect
   },
   data() {
     return {

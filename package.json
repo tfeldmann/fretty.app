@@ -12,9 +12,9 @@
     "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "@fortawesome/vue-fontawesome": "^0.1.10",
     "@tonaljs/tonal": "^4.1.0",
-    "buefy": "^0.9.1",
+    "buefy": "^0.9.2",
     "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "vue": "^2.6.12"
   },
   "devDependencies": {
     "@fullhuman/vue-cli-plugin-purgecss": "~2.2.0",
@@ -31,7 +31,7 @@
     "sass": "^1.26.10",
     "sass-loader": "^8.0.2",
     "vue-cli-plugin-buefy": "~0.3.7",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.12"
   },
   "eslintConfig": {
     "root": true,

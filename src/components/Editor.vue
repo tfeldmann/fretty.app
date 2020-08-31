@@ -4,48 +4,32 @@
       <div class="columns is-multiline is-centered">
         <div class="column">
           <b-field grouped group-multiline position="is-centered">
-            <b-field>
-              <template slot="label">
-                Tuning
-                <b-dropdown position="is-bottom-right" append-to-body aria-role="menu" trap-focus>
-                  <a slot="trigger" role="button">(browse)</a>
-
-                  <b-dropdown-item aria-role="menu-item" :focusable="false" custom paddingless>
-                    <div class="modal-card" style="width:300px;">
-                      <section class="modal-card-body">
-                        <!-- Search and filter
-                      <b-field>
-                        <p class="control">
-                          <b-dropdown>
-                            <button class="button" slot="trigger">
-                              <span>Filters</span>
-                              <b-icon icon="menu-down"></b-icon>
-                            </button>
-
-                            <b-dropdown-item value="open_issues">Open Issues and Pull Requests</b-dropdown-item>
-                            <b-dropdown-item value="your_issues">Your Issues</b-dropdown-item>
-                            <b-dropdown-item value="pull_requests">Your Pull Requests</b-dropdown-item>
-                            <b-dropdown-item value="everything">Everything</b-dropdown-item>
-                          </b-dropdown>
-                        </p>
-                        <b-input icon="magnify" type="search" placeholder="Search..."></b-input>
-                      </b-field>
-                        -->
-                        <b-table :data="tunings" :columns="tuning_columns"></b-table>
-                      </section>
-                      <footer class="modal-card-foot">
-                        <button class="button is-primary">Select</button>
-                      </footer>
-                    </div>
-                  </b-dropdown-item>
-                </b-dropdown>
-              </template>
-              <b-input v-model="usr_tuning" v-on:change.native="saveSettings" icon="guitar"></b-input>
+            <b-field label="Tuning">
+              <b-autocomplete
+                v-model="usr_tuning"
+                v-on:change.native="saveSettings"
+                :data="tuning_search"
+                @select="(option) => (selected = option.name)"
+                group-field="instrument"
+                group-options="tunings"
+                keep-first
+                open-on-focus
+                clearable
+                icon="guitar"
+                style="width: 400px"
+              >
+                <template slot-scope="props">
+                  <div style="display: flex">
+                    <div style="flex: 1 1 0px">{{ props.option.name }}</div>
+                    <div style="flex: 1 1 0px">{{ props.option.tuning }}</div>
+                  </div>
+                </template>
+              </b-autocomplete>
             </b-field>
 
             <!-- Field Scale -->
             <b-field label="Tonic:">
-              <b-input v-model="scale.tonic" icon="music"></b-input>
+              <b-input v-model="scale.tonic" icon="music" style="max-width: 100px"></b-input>
             </b-field>
             <b-field label="Scale:">
               <b-autocomplete
@@ -56,7 +40,6 @@
                 clearable
                 append-to-body
                 @select="(option) => (selected = option)"
-                @input="value => focus()"
               ></b-autocomplete>
             </b-field>
 
@@ -136,28 +119,13 @@ export default {
       usr_tuning: localStorage.getItem("tuning") || "E A D G",
       sharps: "sharps",
       frets: 18,
-      scale: { tonic: "A", type: "minor pentatonic" },
-      tunings: Tunings,
-      tuning_columns: [
-        {
-          field: "instrument",
-          label: "Instrument"
-        },
-        {
-          field: "name",
-          label: "Name"
-        },
-        {
-          field: "tuning",
-          label: "Tuning",
-          centered: true
-        }
-      ]
+      scale: { tonic: "A", type: "minor pentatonic" }
     };
   },
 
   computed: {
     tuning: function() {
+      if (!this.usr_tuning) return [];
       return this.usr_tuning
         .trim()
         .split(" ")
@@ -174,7 +142,7 @@ export default {
       let name = this.scale.tonic + " " + this.scale.type;
       return Scale.get(name);
     },
-    scale_search() {
+    scale_search: function() {
       return ALL_SCALES.filter(option => {
         return (
           option
@@ -183,6 +151,9 @@ export default {
             .indexOf(this.scale.type.toLowerCase()) >= 0
         );
       });
+    },
+    tuning_search: function(option) {
+      return Tunings;
     }
   },
 

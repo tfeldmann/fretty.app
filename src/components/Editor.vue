@@ -40,7 +40,7 @@
                   </b-dropdown-item>
                 </b-dropdown>
               </template>
-              <b-input v-model="usr_tuning" icon="guitar"></b-input>
+              <b-input v-model="usr_tuning" v-on:change.native="saveSettings" icon="guitar"></b-input>
             </b-field>
 
             <!-- Field Scale -->
@@ -132,8 +132,9 @@ export default {
   },
 
   data: function() {
+    let tuning = localStorage.getItem("tuning") || "E A D G";
     return {
-      usr_tuning: "E A D G",
+      usr_tuning: tuning,
       sharps: "sharps",
       frets: 18,
       scale: { tonic: "A", type: "minor pentatonic" },
@@ -187,6 +188,9 @@ export default {
   },
 
   methods: {
+    saveSettings() {
+      localStorage.setItem("tuning", this.usr_tuning);
+    },
     clickMe() {
       alert("Clicked!!");
     },

@@ -1,26 +1,32 @@
 <template>
   <section class="section">
     <div class="container" v-for="(i, editor) in editors" v-bind:key="editor">
-      <note-select />
-      <Editor />
+      <!--<note-select />-->
+      <Editor v-on:add-fretboard-below="addBelow(i+1)" />
     </div>
   </section>
 </template>
 
 <script>
 import Editor from "./components/Editor.vue";
-import NoteSelect from "./components/NoteSelect.vue";
+// import NoteSelect from "./components/NoteSelect.vue";
 
 export default {
   name: "App",
   components: {
     Editor,
-    NoteSelect
+    // NoteSelect
   },
   data() {
     return {
-      editors: [1]
+      editors: [null]
     };
+  },
+  methods: {
+    addBelow: function(position) {
+      console.log(position);
+      this.editors.splice(position, 0, null);
+    }
   }
 };
 </script>

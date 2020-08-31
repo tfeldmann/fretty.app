@@ -95,8 +95,8 @@
                         <!-- <b-checkbox>Show piano</b-checkbox>-->
                       </section>
                       <footer class="modal-card-foot">
-                        <b-button @click="clickMe" icon-left="plus">add below</b-button>
-                        <b-button @click="clickMe" icon-left="trash">remove</b-button>
+                        <b-button @click="$emit('add-fretboard-below')" icon-left="plus">add below</b-button>
+                        <b-button @click="$emit('remove-fretboard')" icon-left="trash">remove</b-button>
                       </footer>
                     </div>
                   </form>
@@ -132,9 +132,8 @@ export default {
   },
 
   data: function() {
-    let tuning = localStorage.getItem("tuning") || "E A D G";
     return {
-      usr_tuning: tuning,
+      usr_tuning: localStorage.getItem("tuning") || "E A D G",
       sharps: "sharps",
       frets: 18,
       scale: { tonic: "A", type: "minor pentatonic" },
@@ -190,9 +189,6 @@ export default {
   methods: {
     saveSettings() {
       localStorage.setItem("tuning", this.usr_tuning);
-    },
-    clickMe() {
-      alert("Clicked!!");
     },
     normalize(notes) {
       return notes.map(x => x % 12);

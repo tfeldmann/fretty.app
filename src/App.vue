@@ -2,7 +2,7 @@
   <section class="section">
     <div class="container" v-for="(i, editor) in editors" v-bind:key="editor">
       <!--<note-select />-->
-      <Editor v-on:add-fretboard-below="addBelow(i+1)" />
+      <Editor v-on:add-fretboard-below="addBelow(i)" v-on:remove-fretboard="remove(i)" />
     </div>
   </section>
 </template>
@@ -14,18 +14,22 @@ import Editor from "./components/Editor.vue";
 export default {
   name: "App",
   components: {
-    Editor,
+    Editor
     // NoteSelect
   },
   data() {
     return {
-      editors: [null]
+      editors: [1]
     };
   },
   methods: {
-    addBelow: function(position) {
-      console.log(position);
-      this.editors.splice(position, 0, null);
+    addBelow: function(pos) {
+      this.editors.splice(pos, 0, Math.max(...this.editors) + 1);
+    },
+    remove: function(pos) {
+      if (this.editors.length > 0) {
+        this.editors.splice(pos, 1);
+      }
     }
   }
 };

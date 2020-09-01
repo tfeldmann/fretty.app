@@ -4,17 +4,17 @@
       <div class="columns is-multiline is-centered">
         <div class="column">
           <b-field grouped group-multiline position="is-centered">
+            <!-- Tuning -->
             <b-field label="Tuning">
               <b-autocomplete
                 v-model="usr_tuning"
-                v-on:change.native="saveSettings"
                 :data="tuning_search"
-                @select="(option) => (selected = option.name)"
+                @select="option => (selected = option.name)"
                 group-field="instrument"
                 group-options="tunings"
-                keep-first
                 open-on-focus
                 clearable
+                field="tuning"
                 icon="guitar"
                 style="width: 400px"
               >
@@ -27,7 +27,7 @@
               </b-autocomplete>
             </b-field>
 
-            <!-- Field Scale -->
+            <!-- Tonic + Scale -->
             <b-field label="Tonic:">
               <b-input v-model="scale.tonic" icon="music" style="max-width: 100px"></b-input>
             </b-field>
@@ -152,8 +152,19 @@ export default {
         );
       });
     },
-    tuning_search: function(option) {
-      return Tunings;
+    tuning_search() {
+      const newData = [];
+      Tunings.forEach(element => {
+        const items = element.tunings.filter(
+          item =>
+            item.tuning.toLowerCase().indexOf(this.usr_tuning.toLowerCase()) >=
+            0
+        );
+        if (items.length) {
+          newData.push({ instrument: element.instrument, tunings: items });
+        }
+      });
+      return newData;
     }
   },
 

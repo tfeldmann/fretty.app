@@ -16,7 +16,8 @@
                 clearable
                 field="tuning"
                 icon="guitar"
-                style="width: 400px"
+                style="min-width: 350px"
+                @input="saveSettings"
               >
                 <template slot-scope="props">
                   <div style="display: flex">
@@ -78,8 +79,7 @@
                         <!-- <b-checkbox>Show piano</b-checkbox>-->
                       </section>
                       <footer class="modal-card-foot">
-                        <b-button @click="$emit('add-fretboard-below')" icon-left="plus">add below</b-button>
-                        <b-button @click="$emit('remove-fretboard')" icon-left="trash">remove</b-button>
+                        <b-button @click="$emit('remove-fretboard')" icon-left="trash">remove fretboard</b-button>
                       </footer>
                     </div>
                   </form>
@@ -101,10 +101,15 @@
 <script>
 import Fretboard from "./Fretboard.vue";
 // import NoteSelect from "./NoteSelect.vue";
-import { Note, Scale, Midi } from "@tonaljs/tonal";
+import { Note, Scale, Midi, ScaleType } from "@tonaljs/tonal";
 import { Tunings } from "../tunings.js";
 
-const ALL_SCALES = Object.freeze(Scale.names());
+var ALL_SCALES = [];
+for (var scale of ScaleType.all())
+{
+  ALL_SCALES.push(scale.name);
+  ALL_SCALES.push(...scale.aliases);
+}
 
 export default {
   name: "Editor",
@@ -170,6 +175,7 @@ export default {
 
   methods: {
     saveSettings() {
+      console.log("saving");
       localStorage.setItem("tuning", this.usr_tuning);
     },
     normalize(notes) {

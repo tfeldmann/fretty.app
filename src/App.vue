@@ -1,8 +1,11 @@
 <template>
   <section class="section">
-    <div class="container" v-for="(i, editor) in editors" v-bind:key="editor">
+    <div class="container" v-for="editor in editors" v-bind:key="editor">
       <!--<note-select />-->
-      <Editor v-on:add-fretboard-below="addBelow(i)" v-on:remove-fretboard="remove(i)" />
+      <Editor v-on:remove-fretboard="remove(editor)" />
+    </div>
+    <div class="container has-text-centered">
+      <a @click="add" >+ Add fretboard</a>
     </div>
   </section>
 </template>
@@ -23,14 +26,15 @@ export default {
     };
   },
   methods: {
-    addBelow: function(pos) {
-      this.editors.splice(pos, 0, Math.max(...this.editors) + 1);
+    add: function() {
+      this.editors.push(Math.max(...this.editors) + 1);
     },
-    remove: function(pos) {
-      if (this.editors.length > 0) {
-        this.editors.splice(pos, 1);
+    remove: function(editor) {
+      const index = this.editors.indexOf(editor);
+      if (index > -1) {
+        this.editors.splice(index, 1);
       }
-    }
+    },
   }
 };
 </script>

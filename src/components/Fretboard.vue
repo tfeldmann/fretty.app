@@ -229,6 +229,7 @@ export default {
     },
     inlay_polys: function() {
       let result = [];
+      if (!this.tuning.length) return result;
       for (let fret of this.inlays) {
         if (fret >= this.frets) break;
 

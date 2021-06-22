@@ -36,7 +36,6 @@
               <b-autocomplete
                 v-model="scale.type"
                 :data="scale_search"
-                keep-first
                 open-on-focus
                 clearable
                 append-to-body

@@ -84,12 +84,14 @@
                 dominant-baseline="central"
                 fill="black"
                 text-anchor="middle"
-              >{{ note.name }}</text>
+              >
+                {{ note.name }}
+              </text>
             </g>
           </transition>
           <circle
-            @mouseleave="hover_note=-1"
-            @mouseover="hover_note=note.num"
+            @mouseleave="hover_note = -1"
+            @mouseover="hover_note = note.num"
             r="10"
             :cx="note.x"
             :cy="string.y"
@@ -105,7 +107,9 @@
               :cx="note.x"
               :cy="string.y"
               r="10"
-              :stroke-dasharray="hover_note == note.num && note.num != root ? '4,4' : '0'"
+              :stroke-dasharray="
+                hover_note == note.num && note.num != root ? '4,4' : '0'
+              "
               :fill="root == note.num ? 'black' : 'white'"
               stroke="black"
             />
@@ -118,10 +122,12 @@
               :fill="root == note.num ? 'white' : 'black'"
               :font-weight="root == note.num ? 'bold' : 'normal'"
               text-anchor="middle"
-            >{{ note.name }}</text>
+            >
+              {{ note.name }}
+            </text>
             <circle
-              @mouseleave="hover_note=-1"
-              @mouseover="hover_note=note.num"
+              @mouseleave="hover_note = -1"
+              @mouseover="hover_note = note.num"
               r="10"
               :cx="note.x"
               :cy="string.y"
@@ -143,26 +149,26 @@ export default {
   props: {
     tuning: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     notes: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     inlays: {
-      default: () => [3, 5, 7, 9, 12, 15, 17, 19, 21]
+      default: () => [3, 5, 7, 9, 12, 15, 17, 19, 21],
     },
     root: {
-      type: Number
+      type: Number,
     },
     frets: {
       type: Number,
-      default: 18
+      default: 18,
     },
     sharps: {
       type: Boolean,
-      default: true // TODO: "sharps", "flats" or "interval"
-    }
+      default: true, // TODO: "sharps", "flats" or "interval"
+    },
   },
 
   data() {
@@ -193,7 +199,7 @@ export default {
             fret: fret,
             name: this.toname(num),
             x: (this.fretpos(fret - 1) + this.fretpos(fret)) / 2,
-            key: "n" + string + "_" + fret
+            key: "n" + string + "_" + fret,
           };
           if (normalized_notes.includes(num)) {
             visible.push(note);
@@ -207,7 +213,7 @@ export default {
             y: string * this.string_spacing,
             tuning: this.toname(tuning),
             visible: visible,
-            hidden: hidden
+            hidden: hidden,
           });
         }
       });
@@ -218,13 +224,13 @@ export default {
       for (let i = 1; i < this.frets; i++) {
         lines.push({
           nr: i,
-          x: this.fretpos(i)
+          x: this.fretpos(i),
         });
       }
       return {
         y1: this.height == 0 ? -this.string_spacing / 4 : 0,
         y2: this.height == 0 ? this.string_spacing / 4 : this.height,
-        lines: lines
+        lines: lines,
       };
     },
     inlay_polys: function() {
@@ -256,14 +262,14 @@ export default {
             [nleft, top],
             [nright, top],
             [nright, bottom],
-            [nleft, bottom]
+            [nleft, bottom],
           ];
         } else {
           points = [
             [left + width / 2, top],
             [nleft, height / 2],
             [left + width / 2, bottom],
-            [nright, height / 2]
+            [nright, height / 2],
           ];
         }
 
@@ -274,11 +280,11 @@ export default {
 
         result.push({
           fret: fret,
-          points: pointsstr
+          points: pointsstr,
         });
       }
       return result;
-    }
+    },
   },
 
   methods: {
@@ -297,13 +303,13 @@ export default {
     toname(x) {
       return Midi.midiToNoteName(x, {
         sharps: this.sharps,
-        pitchClass: true
+        pitchClass: true,
       });
     },
     normalize(notes) {
-      return notes.map(x => x % 12);
-    }
-  }
+      return notes.map((x) => x % 12);
+    },
+  },
 };
 </script>
 

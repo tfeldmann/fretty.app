@@ -91,7 +91,7 @@ export default {
   name: "NoteSelect",
   components: {
     [Icon.name]: Icon,
-    [Input.name]: Input
+    [Input.name]: Input,
   },
   mixins: [FormElementMixin],
   inheritAttrs: false,
@@ -100,25 +100,25 @@ export default {
     disabled: Boolean,
     type: {
       type: String,
-      default: "is-primary"
+      default: "is-primary",
     },
     editable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     controls: {
       type: Boolean,
-      default: true
+      default: true,
     },
     controlsRounded: {
       type: Boolean,
-      default: false
+      default: false,
     },
-    controlsPosition: String
+    controlsPosition: String,
   },
   data() {
     return {
-      newValue: !isNaN(this.note) ? this.note : 0
+      newValue: !isNaN(this.note) ? this.note : 0,
     };
   },
   computed: {
@@ -135,18 +135,18 @@ export default {
           this.$emit("input", newValue);
           !this.isValid && this.$refs.input.checkHtml5Validity();
         }
-      }
+      },
     },
     fieldClasses() {
       return [
         { "has-addons": this.controlsPosition === "compact" },
         { "is-grouped": this.controlsPosition !== "compact" },
-        { "is-expanded": this.expanded }
+        { "is-expanded": this.expanded },
       ];
     },
     buttonClasses() {
       return [this.type, this.size, { "is-rounded": this.controlsRounded }];
-    }
+    },
   },
   watch: {
     /**
@@ -155,13 +155,13 @@ export default {
      */
     value(value) {
       this.newValue = value;
-    }
+    },
   },
   methods: {
     toname(x) {
       return Midi.midiToNoteName(x, {
         sharps: this.sharps == "sharps",
-        pitchClass: true
+        pitchClass: true,
       });
     },
     decrement() {
@@ -194,8 +194,8 @@ export default {
       }
       clearInterval(this._$intervalRef);
       this._$intervalRef = null;
-    }
-  }
+    },
+  },
 };
 </script>
 

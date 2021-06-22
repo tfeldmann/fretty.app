@@ -1,11 +1,14 @@
-# fretty
+# fretty.app
+
+An interactive fretboard exploration tool for all stringed instruments.
+
 
 ## Project setup
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Run local development server
 ```
 npm run serve
 ```

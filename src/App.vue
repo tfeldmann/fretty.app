@@ -5,7 +5,7 @@
       <Editor v-on:remove-fretboard="remove(editor)" />
     </div>
     <div class="container has-text-centered">
-      <a @click="add" >+ Add fretboard</a>
+      <a @click="add">+ Add fretboard</a>
     </div>
   </section>
 </template>
@@ -17,12 +17,12 @@ import Editor from "./components/Editor.vue";
 export default {
   name: "App",
   components: {
-    Editor
+    Editor,
     // NoteSelect
   },
   data() {
     return {
-      editors: [1]
+      editors: [1],
     };
   },
   methods: {
@@ -35,7 +35,7 @@ export default {
         this.editors.splice(index, 1);
       }
     },
-  }
+  },
 };
 </script>
 

@@ -4,6 +4,8 @@ An interactive fretboard exploration tool for all stringed instruments.
 
 Online version: [fretty.app](https://fretty.app)
 
+If you like this project, consider donating (to cover domain costs) or submit a pull request!
+
 <img width="100%" src="https://github.com/tfeldmann/fretty.app/raw/master/other/screenshot.png" alt="fretty.app screenshot">
 
 ## Project setup

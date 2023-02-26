@@ -43,7 +43,11 @@
       "eslint:recommended",
       "@vue/prettier"
     ],
-    "rules": {}
+    "rules": {
+      "vue/multi-word-component-names": ["error", {
+        "ignores": [ "Editor", "Embed", "Fretboard", "Tuning" ]
+      }]
+    }
   },
   "browserslist": [
     "> 1%",

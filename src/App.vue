@@ -26,10 +26,10 @@ export default {
     };
   },
   methods: {
-    add: function() {
+    add: function () {
       this.editors.push(Math.max(...this.editors) + 1);
     },
-    remove: function(editor) {
+    remove: function (editor) {
       const index = this.editors.indexOf(editor);
       if (index > -1) {
         this.editors.splice(index, 1);

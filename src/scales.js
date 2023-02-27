@@ -1,6 +1,6 @@
 // SCALES
 // Format: ["intervals", "name", "alias1", "alias2", ...]
-const SCALES = [
+const SCALES: string[][] = [
   // 5-note scales
   ["1P 2M 3M 5P 6M", "major pentatonic", "pentatonic"],
   ["1P 3M 4P 5P 7M", "ionian pentatonic"],

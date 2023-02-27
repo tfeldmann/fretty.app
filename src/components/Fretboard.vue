@@ -23,7 +23,7 @@
         v-for="inlay in inlay_polys"
         :key="'inlay_' + inlay.fret"
         :points="inlay.points"
-        style="fill: #eee"
+        style="fill:#eee"
       />
 
       <!-- string lines -->
@@ -179,13 +179,13 @@ export default {
   },
 
   computed: {
-    width: function () {
+    width: function() {
       return this.fretpos(this.frets - 1);
     },
-    height: function () {
+    height: function() {
       return (this.tuning.length - 1) * this.string_spacing;
     },
-    strings: function () {
+    strings: function() {
       let result = [];
       this.tuning.forEach((tuning, string) => {
         // find notes
@@ -219,7 +219,7 @@ export default {
       });
       return result;
     },
-    fret_lines: function () {
+    fret_lines: function() {
       let lines = [];
       for (let i = 1; i < this.frets; i++) {
         lines.push({
@@ -233,7 +233,7 @@ export default {
         lines: lines,
       };
     },
-    inlay_polys: function () {
+    inlay_polys: function() {
       let result = [];
       if (!this.tuning.length) return result;
       for (let fret of this.inlays) {

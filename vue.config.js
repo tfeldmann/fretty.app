@@ -1,8 +1,8 @@
 module.exports = {
-  configureWebpack: {
-    entry: {
-      index: "./src/main.js",
-      test: "./src/main.js",
-    },
-  },
-};
+    configureWebpack: {
+      entry: {
+        index: './src/main.js',
+        test: './src/main.js'
+      }
+    }
+  }

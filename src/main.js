@@ -40,7 +40,7 @@ library.add(
   faCaretDown,
   faTrash,
   faMusic,
-  faGuitar
+  faGuitar,
 );
 Vue.component("vue-fontawesome", FontAwesomeIcon);
 
@@ -61,13 +61,13 @@ Vue.use(Checkbox);
 ConfigProgrammatic.setOptions({
   defaultIconComponent: "vue-fontawesome",
   defaultIconPack: "fas",
-  defaultContainerElement: "#content",
+  defaultContainerElement: "#content"
 });
 
 Vue.config.productionTip = false;
 
 window.onload = function () {
   new Vue({
-    render: (h) => h(App),
+    render: h => h(App)
   }).$mount("#app");
-};
+}

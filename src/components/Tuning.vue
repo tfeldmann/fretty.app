@@ -21,7 +21,7 @@
                   custom
                   paddingless
                 >
-                  <div class="modal-card" style="width: 300px">
+                  <div class="modal-card" style="width:300px;">
                     <section class="modal-card-body">
                       [Todo] list common tunings
                     </section>
@@ -95,7 +95,7 @@
       </div>
     </div>
 
-    <div class="card-image" style="text-align: center">
+    <div class="card-image" style="text-align:center">
       <Fretboard
         :tuning="tuning"
         :notes="notes"
@@ -117,7 +117,7 @@ export default {
     Fretboard,
   },
 
-  data: function () {
+  data: function() {
     return {
       usr_tuning: "E A D G",
       sharps: "sharps",
@@ -128,17 +128,21 @@ export default {
   },
 
   computed: {
-    tuning: function () {
-      return this.usr_tuning.trim().split(" ").map(Note.chroma).reverse();
+    tuning: function() {
+      return this.usr_tuning
+        .trim()
+        .split(" ")
+        .map(Note.chroma)
+        .reverse();
     },
-    notes: function () {
+    notes: function() {
       return this.scale_info.notes.map(Note.chroma);
     },
-    scale_info: function () {
+    scale_info: function() {
       let name = this.scale.tonic + " " + this.scale.type;
       return Scale.get(name);
     },
-    chromatic: function () {
+    chromatic: function() {
       return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(this.toname);
     },
     scale_search() {

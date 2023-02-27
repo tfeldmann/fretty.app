@@ -9,7 +9,7 @@
               <b-autocomplete
                 v-model="usr_tuning"
                 :data="tuning_search"
-                @select="(option) => (selected = option.name)"
+                @select="option => (selected = option.name)"
                 group-field="instrument"
                 group-options="tunings"
                 open-on-focus
@@ -30,11 +30,7 @@
 
             <!-- Tonic + Scale -->
             <b-field label="Tonic:">
-              <b-input
-                v-model="scale.tonic"
-                icon="music"
-                style="max-width: 100px"
-              ></b-input>
+              <b-input v-model="scale.tonic" icon="music" style="max-width: 100px"></b-input>
             </b-field>
             <b-field label="Scale:">
               <b-autocomplete
@@ -50,22 +46,15 @@
             <!-- Settings -->
             <b-field>
               <template slot="label">
-                <span style="color: transparent; user-select: none">More</span>
+                <span style="color: transparent; user-select:none;">More</span>
               </template>
 
               <b-dropdown append-to-body aria-role="menu" trap-focus>
-                <b-button class="button" slot="trigger" icon-left="cog"
-                  >Settings</b-button
-                >
+                <b-button class="button" slot="trigger" icon-left="cog">Settings</b-button>
 
-                <b-dropdown-item
-                  aria-role="menu-item"
-                  :focusable="false"
-                  custom
-                  paddingless
-                >
+                <b-dropdown-item aria-role="menu-item" :focusable="false" custom paddingless>
                   <form action>
-                    <div class="modal-card" style="width: 300px">
+                    <div class="modal-card" style="width:300px;">
                       <section class="modal-card-body">
                         <b-field label="Frets">
                           <b-numberinput
@@ -77,17 +66,11 @@
                         </b-field>
                         <b-field label="Notation">
                           <b-field>
-                            <b-radio-button
-                              v-model="sharps"
-                              native-value="sharps"
-                            >
+                            <b-radio-button v-model="sharps" native-value="sharps">
                               <span>#</span>
                             </b-radio-button>
 
-                            <b-radio-button
-                              v-model="sharps"
-                              native-value="flats"
-                            >
+                            <b-radio-button v-model="sharps" native-value="flats">
                               <span>b</span>
                             </b-radio-button>
                           </b-field>
@@ -95,11 +78,7 @@
                         <!-- <b-checkbox>Show piano</b-checkbox>-->
                       </section>
                       <footer class="modal-card-foot">
-                        <b-button
-                          @click="$emit('remove-fretboard')"
-                          icon-left="trash"
-                          >remove fretboard</b-button
-                        >
+                        <b-button @click="$emit('remove-fretboard')" icon-left="trash">remove fretboard</b-button>
                       </footer>
                     </div>
                   </form>
@@ -111,14 +90,8 @@
         </div>
       </div>
 
-      <div class="card-image" style="text-align: center; overflow-x: auto">
-        <Fretboard
-          :tuning="tuning"
-          :notes="notes"
-          :sharps="sharps"
-          :frets="frets"
-          :root="root"
-        />
+      <div class="card-image" style="text-align:center; overflow-x: auto;">
+        <Fretboard :tuning="tuning" :notes="notes" :sharps="sharps" :frets="frets" :root="root" />
       </div>
     </div>
   </div>
@@ -131,7 +104,8 @@ import { Note, Scale, Midi, ScaleType } from "@tonaljs/tonal";
 import { Tunings } from "../tunings.js";
 
 var ALL_SCALES = [];
-for (var scale of ScaleType.all()) {
+for (var scale of ScaleType.all())
+{
   ALL_SCALES.push(scale.name);
   ALL_SCALES.push(...scale.aliases);
 }
@@ -140,36 +114,40 @@ export default {
   name: "Editor",
 
   components: {
-    Fretboard,
+    Fretboard
     // NoteSelect,
   },
 
-  data: function () {
+  data: function() {
     return {
       usr_tuning: localStorage.getItem("tuning") || "E A D G",
       sharps: "sharps",
       frets: 18,
-      scale: { tonic: "A", type: "minor pentatonic" },
+      scale: { tonic: "A", type: "minor pentatonic" }
     };
   },
 
   computed: {
-    tuning: function () {
+    tuning: function() {
       if (!this.usr_tuning) return [];
-      return this.usr_tuning.trim().split(" ").map(Note.chroma).reverse();
+      return this.usr_tuning
+        .trim()
+        .split(" ")
+        .map(Note.chroma)
+        .reverse();
     },
-    root: function () {
+    root: function() {
       return Note.chroma(this.scale.tonic);
     },
-    notes: function () {
+    notes: function() {
       return this.scale_info.notes.map(Note.chroma);
     },
-    scale_info: function () {
+    scale_info: function() {
       let name = this.scale.tonic + " " + this.scale.type;
       return Scale.get(name);
     },
-    scale_search: function () {
-      return ALL_SCALES.filter((option) => {
+    scale_search: function() {
+      return ALL_SCALES.filter(option => {
         return (
           option
             .toString()
@@ -180,9 +158,9 @@ export default {
     },
     tuning_search() {
       const newData = [];
-      Tunings.forEach((element) => {
+      Tunings.forEach(element => {
         const items = element.tunings.filter(
-          (item) =>
+          item =>
             item.tuning.toLowerCase().indexOf(this.usr_tuning.toLowerCase()) >=
             0
         );
@@ -191,7 +169,7 @@ export default {
         }
       });
       return newData;
-    },
+    }
   },
 
   methods: {
@@ -200,12 +178,12 @@ export default {
       localStorage.setItem("tuning", this.usr_tuning);
     },
     normalize(notes) {
-      return notes.map((x) => x % 12);
+      return notes.map(x => x % 12);
     },
     toname(x) {
       return Midi.midiToNoteName(x, {
         sharps: this.sharps == "sharps",
-        pitchClass: true,
+        pitchClass: true
       });
     },
     scale_input(x, y) {
@@ -213,8 +191,8 @@ export default {
       if (x == "") {
         return;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -20,7 +20,7 @@
 
       <!-- fret inlays -->
       <polygon
-        v-for="inlay in inlay_polys"
+        v-for="inlay in this.polys"
         :key="'inlay_' + inlay.fret"
         :points="inlay.points"
         style="fill: #eee"
@@ -28,7 +28,7 @@
 
       <!-- string lines -->
       <line
-        v-for="string in strings"
+        v-for="string in this.string"
         :key="'string_' + string.nr"
         x1="0"
         :y1="string.y"
@@ -50,13 +50,14 @@
       />
 
       <!-- frets -->
+
       <line
-        v-for="fret in fret_lines.lines"
+        v-for="fret in this.fretsShape.lines"
         :key="'fret_' + fret.nr"
         :x1="fret.x"
-        :y1="fret_lines.y1"
+        :y1="fretsShape.y1"
         :x2="fret.x"
-        :y2="fret_lines.y2"
+        :y2="fretsShape.y2"
         stroke="#000"
         :stroke-width="fret.width"
       />
@@ -175,16 +176,29 @@ export default {
     return {
       string_spacing: 25,
       hover_note: -1,
+      string: [],
+      fretsShape: [],
+      polys: [],
+      fretboardWidth: 0,
+      fretboardHeight: 0,
     };
   },
-
+  mounted() {
+    this.fretsShape = this.fret_lines();
+    this.polys = this.inlay_polys();
+    this.string = this.strings();
+  },
   computed: {
     width: function () {
       return this.fretpos(this.frets - 1);
     },
     height: function () {
-      return (this.tuning.length - 1) * this.string_spacing;
+      let tunningLength = 6;
+      if (this.tuning.length > 0) tunningLength = this.tuning.length;
+      return (tunningLength - 1) * this.string_spacing;
     },
+  },
+  methods: {
     strings: function () {
       let result = [];
       this.tuning.forEach((tuning, string) => {
@@ -227,6 +241,7 @@ export default {
           x: this.fretpos(i),
         });
       }
+
       return {
         y1: this.height == 0 ? -this.string_spacing / 4 : 0,
         y2: this.height == 0 ? this.string_spacing / 4 : this.height,
@@ -285,9 +300,6 @@ export default {
       }
       return result;
     },
-  },
-
-  methods: {
     fretpos(n) {
       // https://www.liutaiomottola.com/formulae/fret.htm
       if (n <= 20) {

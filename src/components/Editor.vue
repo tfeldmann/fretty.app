@@ -120,14 +120,16 @@
           :root="root"
         />
       </div>
+      <Chords :chords="scaleChords" />
     </div>
   </div>
 </template>
 
 <script>
 import Fretboard from "./Fretboard.vue";
+import Chords from "./Chords.vue";
 // import NoteSelect from "./NoteSelect.vue";
-import { Note, Scale, Midi, ScaleType } from "@tonaljs/tonal";
+import { Note, Scale, Midi, ScaleType, Mode } from "@tonaljs/tonal";
 import { Tunings } from "../tunings.js";
 
 var ALL_SCALES = [];
@@ -141,6 +143,7 @@ export default {
 
   components: {
     Fretboard,
+    Chords,
     // NoteSelect,
   },
 
@@ -149,7 +152,7 @@ export default {
       usr_tuning: localStorage.getItem("tuning") || "E A D G B E",
       sharps: "sharps",
       frets: 18,
-      scale: { tonic: "A", type: "minor pentatonic" },
+      scale: { tonic: "A", type: "minor" },
     };
   },
 
@@ -167,6 +170,9 @@ export default {
     scale_info: function () {
       let name = this.scale.tonic + " " + this.scale.type;
       return Scale.get(name);
+    },
+    scaleChords: function () {
+      return Mode.triads(this.scale_info.type, this.scale_info.tonic);
     },
     scale_search: function () {
       return ALL_SCALES.filter((option) => {

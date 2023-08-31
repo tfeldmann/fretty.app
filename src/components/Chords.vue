@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h2>Scale Chords:</h2>
+    <b-field grouped group-multiline position="is-centered">
+      <b-field label="Scale Chords"></b-field>
+    </b-field>
+    <hr />
     <div class="chords-container">
       <div class="chord" v-for="chord in chords" :key="chord">
         <div>

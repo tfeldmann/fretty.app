@@ -127,7 +127,6 @@ export default {
         return this.toname(this.newValue); // toname(Math.abs(this.newValue) % 12);
       },
       set(value) {
-        console.log(value);
         value = Note.chroma(value);
         let newValue = value;
         if (value != undefined) {

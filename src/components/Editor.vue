@@ -78,17 +78,23 @@
                         <b-field label="Notation">
                           <b-field>
                             <b-radio-button
-                              v-model="sharps"
+                              v-model="notation"
                               native-value="sharps"
                             >
                               <span>#</span>
                             </b-radio-button>
 
                             <b-radio-button
-                              v-model="sharps"
+                              v-model="notation"
                               native-value="flats"
                             >
                               <span>b</span>
+                            </b-radio-button>
+                            <b-radio-button
+                              v-model="notation"
+                              native-value="Intervals"
+                            >
+                              <span>Intervals</span>
                             </b-radio-button>
                           </b-field>
                         </b-field>
@@ -115,9 +121,10 @@
         <Fretboard
           :tuning="tuning"
           :notes="notes"
-          :sharps="sharps"
+          :notation="notation"
           :frets="frets"
           :root="root"
+          :scale="scale_info"
         />
       </div>
       <Chords :chords="scaleChords" />
@@ -150,7 +157,7 @@ export default {
   data: function () {
     return {
       usr_tuning: localStorage.getItem("tuning") || "E A D G B E",
-      sharps: "sharps",
+      notation: "sharps",
       frets: 18,
       scale: { tonic: "A", type: "minor" },
     };
@@ -202,7 +209,6 @@ export default {
 
   methods: {
     saveSettings() {
-      console.log("saving");
       localStorage.setItem("tuning", this.usr_tuning);
     },
     normalize(notes) {
@@ -210,12 +216,11 @@ export default {
     },
     toname(x) {
       return Midi.midiToNoteName(x, {
-        sharps: this.sharps == "sharps",
+        sharps: this.notation != "flat",
         pitchClass: true,
       });
     },
-    scale_input(x, y) {
-      console.log(y);
+    scale_input(x) {
       if (x == "") {
         return;
       }

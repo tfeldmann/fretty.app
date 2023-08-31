@@ -162,13 +162,16 @@ export default {
     root: {
       type: Number,
     },
+    scale: {
+      type: Object,
+    },
     frets: {
       type: Number,
       default: 18,
     },
-    sharps: {
-      type: Boolean,
-      default: true, // TODO: "sharps", "flats" or "interval"
+    notation: {
+      type: String,
+      default: "sharp", // TODO: "sharps", "flats" or "interval"
     },
   },
 
@@ -191,6 +194,9 @@ export default {
   watch: {
     notes: function (newval) {
       if (newval.length == 0) return;
+      this.strings = this.getStrings();
+    },
+    notation: function () {
       this.strings = this.getStrings();
     },
   },
@@ -320,10 +326,17 @@ export default {
       }
     },
     toname(x) {
-      return Midi.midiToNoteName(x, {
-        sharps: this.sharps,
+      let sharp = this.notation != "flat";
+      let name = Midi.midiToNoteName(x, {
+        sharps: sharp,
         pitchClass: true,
       });
+      if (this.notation != "Intervals") return name;
+
+      var index = this.scale.notes.indexOf(name);
+      if (index == -1) return name;
+
+      return this.scale.intervals[index];
     },
     normalize(notes) {
       return notes.map((x) => x % 12);

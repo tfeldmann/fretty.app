@@ -20,14 +20,20 @@ export default {
       type: Object,
     },
   },
-  // watch: {
-  //   scaleName() {
-  //     console.log("test");
-  //   },
-  // },
+  watch: {
+    scaleName() {
+      this.render();
+    },
+  },
   mounted() {
-    const { Renderer, Stave, StaveNote, Beam, Formatter } = Vex.Flow;
-    const renderer = new Renderer(
+    this.render();
+  },
+  methods: {
+    render(){
+      if(this.$refs.musicNotation.children.len>0)
+        console.log(this.$refs.musicNotation.removeChild(this.$refs.musicNotation.children[0]))
+      const { Renderer, Stave, StaveNote, Beam, Formatter } = Vex.Flow;
+      const renderer = new Renderer(
       this.$refs.musicNotation,
       Renderer.Backends.SVG
     );
@@ -36,32 +42,31 @@ export default {
     const context = renderer.getContext();
     // Create a VexFlow stave
     const stave = new Stave(10, 40, width);
+    
     stave.addClef("treble").addTimeSignature("4/4");
     stave.setContext(context).draw();
+      const num_beats = 4;
+      const scaleNotes = this.scale.notes;
+      const notes = [];
+      scaleNotes.forEach((note, index) => {
+        let pos = num_beats;
+        if (index < num_beats / 2) pos = pos - 1;
 
-    //const scaleNotes = ["C"];
-    const num_beats = 4;
-    const scaleNotes = this.scale.notes;
-    const notes = [];
-    scaleNotes.forEach((note, index) => {
-      let pos = num_beats;
-      if (index < num_beats / 2) pos = pos - 1;
-
-      const vexNote = new StaveNote({
-        keys: [`${note}/${pos}`],
-        duration: "q",
+        const vexNote = new StaveNote({
+          keys: [`${note}/${pos}`],
+          duration: "q",
+        });
+        notes.push(vexNote);
       });
-      notes.push(vexNote);
-    });
-    const beams = Beam.generateBeams(notes);
-    Formatter.FormatAndDraw(context, stave, notes);
-    beams.forEach((b) => {
-      b.setContext(context).draw();
-    });
-  },
-  beforeUpdate() {
-    console.log("beforeUpdate");
-  },
+      
+      const beams = Beam.generateBeams(notes);
+      Formatter.FormatAndDraw(context, stave, notes);
+      beams.forEach((b) => {
+        b.setContext(context).draw();
+      });
+      
+    }
+  }
 };
 </script>
 <style>

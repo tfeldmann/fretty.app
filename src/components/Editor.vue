@@ -128,7 +128,7 @@
         />
       </div>
       <Chords :chords="scaleChords" />
-      <!-- <Notation :scale="scale_info" :scale-name="scale_info.name" /> -->
+      <Notation :scale="scale_info" :scale-name="scale_info.name" />
     </div>
   </div>
 </template>
@@ -136,7 +136,7 @@
 <script>
 import Fretboard from "./Fretboard.vue";
 import Chords from "./Chords.vue";
-// import Notation from "./Notation.vue";
+import Notation from "./Notation.vue";
 // import NoteSelect from "./NoteSelect.vue";
 import { Note, Scale, Midi, ScaleType, Mode } from "@tonaljs/tonal";
 import { Tunings } from "../tunings.js";
@@ -153,7 +153,7 @@ export default {
   components: {
     Fretboard,
     Chords,
-    // Notation,
+    Notation,
     // NoteSelect,
   },
 

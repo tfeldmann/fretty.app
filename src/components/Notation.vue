@@ -30,9 +30,10 @@ export default {
   },
   methods: {
     render(){
-      if(this.$refs.musicNotation.children.len>0)
+
+      if(this.$refs.musicNotation.children.length>0)
         console.log(this.$refs.musicNotation.removeChild(this.$refs.musicNotation.children[0]))
-      const { Renderer, Stave, StaveNote, Beam, Formatter } = Vex.Flow;
+      const { Renderer, Stave, Accidental, StaveNote, Beam, Formatter } = Vex.Flow;
       const renderer = new Renderer(
       this.$refs.musicNotation,
       Renderer.Backends.SVG
@@ -45,20 +46,24 @@ export default {
     
     stave.addClef("treble").addTimeSignature("4/4");
     stave.setContext(context).draw();
-      const num_beats = 4;
       const scaleNotes = this.scale.notes;
       const notes = [];
-      scaleNotes.forEach((note, index) => {
-        let pos = num_beats;
-        if (index < num_beats / 2) pos = pos - 1;
+      let pos = 4;
+      scaleNotes.forEach((note) => {
+        
+        if(note[0].toUpperCase()=='C') pos = pos + 1;
+
 
         const vexNote = new StaveNote({
           keys: [`${note}/${pos}`],
           duration: "q",
         });
+        if(note[1] != undefined)
+        vexNote.addModifier(new Accidental(note[1]))
         notes.push(vexNote);
       });
-      
+    
+
       const beams = Beam.generateBeams(notes);
       Formatter.FormatAndDraw(context, stave, notes);
       beams.forEach((b) => {

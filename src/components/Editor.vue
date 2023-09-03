@@ -98,6 +98,40 @@
                             </b-radio-button>
                           </b-field>
                         </b-field>
+                        <b-field label="Show Chords">
+                          <b-field>
+                            <b-radio-button
+                              v-model="ShowChords"
+                              native-value="true"
+                            >
+                              <span>True</span>
+                            </b-radio-button>
+
+                            <b-radio-button
+                              v-model="ShowChords"
+                              native-value="false"
+                            >
+                              <span>False</span>
+                            </b-radio-button>
+                          </b-field>
+                        </b-field>
+                        <b-field label="Music Sheet">
+                          <b-field>
+                            <b-radio-button
+                              v-model="ShowMusicSheet"
+                              native-value="true"
+                            >
+                              <span>True</span>
+                            </b-radio-button>
+
+                            <b-radio-button
+                              v-model="ShowMusicSheet"
+                              native-value="false"
+                            >
+                              <span>False</span>
+                            </b-radio-button>
+                          </b-field>
+                        </b-field>
                         <!-- <b-checkbox>Show piano</b-checkbox>-->
                       </section>
                       <footer class="modal-card-foot">
@@ -127,8 +161,12 @@
           :scale="scale_info"
         />
       </div>
-      <Chords :chords="scaleChords" />
-      <Notation :scale="scale_info" :scale-name="scale_info.name" />
+      <Chords v-if="this.ShowChords == 'true'" :chords="scaleChords" />
+      <Notation
+        v-if="this.ShowMusicSheet == 'true'"
+        :scale="scale_info"
+        :scale-name="scale_info.name"
+      />
     </div>
   </div>
 </template>
@@ -163,6 +201,8 @@ export default {
       notation: "sharps",
       frets: 18,
       scale: { tonic: "A", type: "minor" },
+      ShowMusicSheet: "false",
+      ShowChords: "true",
     };
   },
 

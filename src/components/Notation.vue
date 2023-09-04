@@ -52,6 +52,8 @@ export default {
       const notes = [];
       let pos = 4;
       scaleNotes.forEach((note) => {
+        
+        // this is just to make notes beautiful in music sheet
         if (note[0].toUpperCase() == "C") pos = pos + 1;
 
         const vexNote = new StaveNote({

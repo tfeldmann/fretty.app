@@ -1,0 +1,8 @@
+services:
+  node14:
+    image: node:14
+    container_name: node14-vue-build
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: sh -c "npm install && npm run build"
